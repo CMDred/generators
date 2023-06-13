@@ -42,6 +42,7 @@ function generateSetting(option){
             setting.classList.add("autocomplete");
             input = document.createElement("input");
             input.type = "text";
+            input.onchange = (() => output());
             new Autocomplete(input,option.autocomplete);
             setting.append(input);
             break;
