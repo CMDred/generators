@@ -49,6 +49,7 @@ function generateSetting(option){
         case "checkbox":
             input = document.createElement("input");
             input.type = "checkbox";
+            input.onchange = (() => output());
             setting.append(input);
             break;
         default:
@@ -100,13 +101,6 @@ class Autocomplete {
             this.focus = e.keyCode == 40 ? Math.min(this.focus + 1, this.container.children.length - 1) : Math.max(this.focus - 1, 0);// the selection index is changed based on whether the up or down arrow was pressed
             this.container.children[this.focus].classList.add("autocomplete-active");// add the class to the new selected item
         });
-        // this.input.addEventListener("keydown", (e) => {
-        //     if (this.container.children.length == 0 || ![13,38,40].includes(e.keyCode)) return
-        //     if(e.keyCode == 13){this.container.children[this.focus].click();return}
-        //     if (this.focus != -1) this.container.children[this.focus].classList.remove("autocomplete-active");
-        //     this.focus = limit(this.focus + e.keyCode - 39,0,this.container.children.length -1);
-        //     this.container.children[this.focus].classList.add("autocomplete-active");
-        // });
     }
 }
 
@@ -129,3 +123,4 @@ newElement = (name,options) => Object.assign(document.createElement(name),option
 
 
 settings.forEach(option => options.appendChild(generateSetting(option)));
+output();
