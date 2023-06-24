@@ -189,6 +189,13 @@ function generateOutput() {
     let outputnamenbttag = input.name.replaceAll("\\'", "'").replaceAll("\\\"", "\"");
     output += `,Name:"${outputnamenbttag}",Type:"${types[input.type].name.toUpperCase()}"${types[input.type].isTool === true ? ",isTool:1b" : ""},Rarity:"${rarities[input.rarity].name.toUpperCase()}",RarityColor:'{"text":"","color":"${rarities[input.rarity].color}"}',LevelColor:'{"text":"","color":"${"#" + darkenColor(rarities[input.rarity].color, -85)}"}'`
 
+    if(!["","Material"].includes(types[input.type].name)){
+        output += `,CustomEnchantments:{`
+        for (let i = 0; i < input.rarity+1; i++) {
+            output += `Slot${i}:""${input.rarity==i?"}":","}`
+        }
+    }
+
     // SkullOwner
     if (input.itemId == "player_head" && input.skullOwner != "") {
         if (input.skullOwner.length < 17) {
