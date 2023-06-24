@@ -33,6 +33,17 @@ class Tag {
     }
 }
 
+class jsonSegment {
+    constructor(value, color) {
+        this.value = value;
+        this.color = color;
+    }
+    
+    get get() {
+        return new Tag(true,`{"text":"${this.value}","color":"${this.color}"}`);
+    }
+}
+
 function getNBT(nbt) {
     out = ""
     for(const tag of nbt){
@@ -52,6 +63,13 @@ function addTag(list, tag){
         list.push(tag)
     }
 }
+
+function addjsonSegment(list, tag){
+    if(tag.condition){
+        list.push(tag)
+    }
+}
+
 
 function output(){
     let nbt = [];
@@ -102,57 +120,14 @@ function output(){
     addTag(nbt, new Tag(ArmorItems.length, ['ArmorItems:[',']'], ArmorItems));
     let CustomName = [];
     addTag(CustomName, new Tag(true, `""`));
-    {
-        let textComponent = [];
-        addTag(textComponent, new Tag(true, `"text":"${get("HP")}"`));
-        addTag(textComponent, new Tag(true, `"color":"green"`));
-        addTag(CustomName, new Tag(textComponent.length, [`{`,`}`], textComponent));
-    }
-    {
-        let textComponent = [];
-        addTag(textComponent, new Tag(true, `"text":"/"`));
-        addTag(textComponent, new Tag(true, `"color":"white"`));
-        addTag(CustomName, new Tag(textComponent.length, [`{`,`}`], textComponent));
-    }
-    {
-        let textComponent = [];
-        addTag(textComponent, new Tag(true, `"text":"${get("HP")}"`));
-        addTag(textComponent, new Tag(true, `"color":"green"`));
-        addTag(CustomName, new Tag(textComponent.length, [`{`,`}`], textComponent));
-    }
-    {
-        let textComponent = [];
-        addTag(textComponent, new Tag(true, `"text":"❤ "`));
-        addTag(textComponent, new Tag(true, `"color":"dark_red"`));
-        addTag(CustomName, new Tag(textComponent.length, [`{`,`}`], textComponent));
-    }
-    {
-        let textComponent = [];
-        addTag(textComponent, new Tag(true, `"text":"${get("Name")} "`));
-        addTag(textComponent, new Tag(true, `"color":"${get("Name Color")}"`));
-        addTag(CustomName, new Tag(textComponent.length, [`{`,`}`], textComponent));
-    }
-    {
-        let textComponent = [];
-        addTag(textComponent, new Tag(true, `"text":"["`));
-        addTag(textComponent, new Tag(true, `"color":"dark_gray"`));
-        addTag(CustomName, new Tag(textComponent.length, [`{`,`}`], textComponent));
-    }
-    {
-        let textComponent = [];
-        addTag(textComponent, new Tag(true, `"text":"Lv${get("Mob Level")}"`));
-        addTag(textComponent, new Tag(true, `"color":"gray"`));
-        addTag(CustomName, new Tag(textComponent.length, [`{`,`}`], textComponent));
-    }
-    {
-        let textComponent = [];
-        addTag(textComponent, new Tag(true, `"text":"]"`));
-        addTag(textComponent, new Tag(true, `"color":"dark_gray"`));
-        addTag(CustomName, new Tag(textComponent.length, [`{`,`}`], textComponent));
-    }
-    addTag(nbt, new Tag(get("HP") && get("Mob Level") && get("Name"), [`CustomName:'[`,`]'`], CustomName));
-
-    //CustomName:'["",{"text":"${get("HP")}","color":"green"},{"text":"/","color":"white"},{"text":"${get("HP")}","color":"green"},{"text":"❤ ","color":"dark_red"},{"text":"${get("Name")} ","color":"${get("Name Color")}"},{"text":"[","color":"dark_gray"},{"text":"Lv${get("Mob Level")}","color":"gray"},{"text":"]","color":"dark_gray"}]'}`;
-    
+    addTag(CustomName, new jsonSegment(`${get("HP")}`,`green`).get);
+    addTag(CustomName, new jsonSegment(`/`,`white`).get);
+    addTag(CustomName, new jsonSegment(`${get("HP")}`,`green`).get);
+    addTag(CustomName, new jsonSegment(`❤ `,`dark_red`).get);
+    addTag(CustomName, new jsonSegment(`${get("Name")} `,`${get("Name Color")}`).get);
+    addTag(CustomName, new jsonSegment(`[`,`dark_gray`).get);
+    addTag(CustomName, new jsonSegment(`Lv${get("Mob Level")}`,`gray`).get);
+    addTag(CustomName, new jsonSegment(`]`,`dark_gray`).get);
+    addTag(nbt, new Tag(get("HP") && get("Mob Level") && get("Name") || true, [`CustomName:'[`,`]'`], CustomName));
     textarea.innerText= `/summon ${get("Mob Type")} ~ ~ ~ {${getNBT(nbt)}}`;
 }
