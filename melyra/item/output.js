@@ -195,7 +195,7 @@ function output(){
             addTag(CustomEnchantments, new jsonSegment(`❌`, `white`).get);
             addTag(CustomEnchantments, new jsonSegment(`] `, shade(colorCodes.white,2/3)).get);
         }
-        let enchantements = new jsonSegment(`Enchantments`, rarity.color);
+        let enchantements = new jsonSegment(` Enchantments`, rarity.color);
         addTag(Lore, new Tag(true, [`'[`,`]'`],[new Tag(true, `""`), start.get,enchantements.get]));
         addTag(Lore, new Tag(true, [`'[`,`]'`],CustomEnchantments));
     }
@@ -231,7 +231,7 @@ function output(){
         addTag(nbt,new Tag(get("Rarity"),`Rarity:'${rarity.name.toUpperCase()}'`));
         addTag(nbt, new Tag(true, [`RarityColor:`,``],[new jsonSegment(``,rarity.color).get]));
         addTag(nbt, new Tag(true, [`LevelColor:`,``],[new jsonSegment(``,shade(rarity.color,2/3)).get]));
-        let raritynbt = new jsonSegment(`${rarity.name.toUpperCase()} ${ type.name.toUpperCase()}`);
+        let raritynbt = new jsonSegment(`${rarity.name.toUpperCase()} ${ type.name.toUpperCase()}`, rarity.color);
         addTag(Lore, new Tag(true,[`'[`,`]'`],[raritynbt.get]));
     }
 
