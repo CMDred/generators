@@ -3,8 +3,8 @@ let settings = [
     {"name":"Name","type":"text"},
     {"type":"html","value":"<br><p>Enter the description of the item. Use \n to begin a new line.</p>"},
     {"name":"Description","type":"text"},
-    {"name":"Rarity","type":"autocomplete","autocomplete":rarities.map(rarity => rarity.name.toLowerCase())},
-    {"name":"Type","type":"autocomplete","autocomplete":types.map(type => type.name.toLowerCase())},
+    {"name":"Rarity","type":"select","options":rarities.map(rarity => rarity.name.toLowerCase())},
+    {"name":"Type","type":"autocomplete","options":types.map(type => type.name.toLowerCase())},
     {"name":`Can be upgraded? (has "This item can be upgraded" text) `,"type":"checkbox"},
     {"type":"html","value":"<br><p>Base Stats (leave at 0 if you don't want it applied to the item)</p>"},
     ...statSettings(),
@@ -53,8 +53,15 @@ function generateSetting(option){
             setting.classList.add("autocomplete");
             input = document.createElement("input");
             input.type = "text";
-            new Autocomplete(input,option.autocomplete);
+            new Autocomplete(input,option.options);
             setting.append(input);
+            break;
+        case "select":
+            input = document.createElement("select");
+            setting.append(input);
+            for(option of option.options){
+                input.append(Object.assign(document.createElement("option"), {value:option, innerText:option}));
+            }
             break;
         case "checkbox":
             input = document.createElement("input");

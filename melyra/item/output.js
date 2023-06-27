@@ -28,6 +28,8 @@ function getvalue(settings,name){
                 break;
             case "DIV":
                 return [option.children[0].value,option.children[1].value];
+            case "SELECT":
+                return option.value;
             default:
                 alert("unknown tagName: " + option.tagName);
                 break;
@@ -208,7 +210,7 @@ function output(){
         addTag(nbt,new Tag(get("Type"),`Type:'${type.name.toUpperCase()}'`));
         addTag(nbt,new Tag(type.isTool,`isTool:1b`));
 
-        if(!["","Material"].includes(type.name)){
+        if(!["","Material"].includes(type.name) && document.getElementsByClassName("hidestat2").length == statData.length){
             let CustomEnchantments = [];
             for (let i = 0; i < rarities.indexOf(rarity)+1; i++) {
                 CustomEnchantments.push(new Tag(true, `Slot${i}:-2`))
