@@ -45,7 +45,8 @@ class Tag {
 }
 
 class jsonSegment {
-    italic
+    italic = false
+    obfuscated
     constructor(value, color) {
         this.value = value;
         this.color = color;
@@ -56,6 +57,7 @@ class jsonSegment {
         addTag(segment, new Tag(this.value != undefined,`"text":"${this.value}"`));
         addTag(segment, new Tag(this.color != undefined,`"color":"${this.color}"`));
         addTag(segment, new Tag(this.italic != undefined,`"italic":"${this.italic}"`));
+        addTag(segment, new Tag(this.obfuscated != undefined,`"obfuscated":"${this.obfuscated}"`));
         return new Tag(true,[`{`,`}`],segment);
     }
 }
@@ -123,14 +125,15 @@ function output(){
     addTag(display,new Tag(get("display.color (leather armor only):") != "#a06540", `{Name:generic.max_health,Base:${get("display.color (leather armor only):")}d}`));
 
     let Name = new jsonSegment(get("Name"), rarity.color);
-    Name.italic = false;
     addTag(display, new Tag(get("Name"),[`Name:'[`,`]'`],[Name.get]));
 
     let description = new jsonSegment(get("Description"),"dark_gray");
+    description.italic = true;
     var Lore = [];
-    addTag(Lore, new Tag(get("Description"),[`'[`,`]'`],[description.get]));
+    addTag(Lore, new Tag(get("Description"),[`'[`,`]'`],[ description.get]));
+    addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
 
-    let lastgroup = 0;
+    let lastgroup = 1;
 
     if(document.getElementsByClassName("hidestat2").length == statData.length){//all stats are a set value
         let stats = [];
@@ -167,26 +170,39 @@ function output(){
         }
         let line = [];
         let symbol = new jsonSegment(`${stat.symbol}${" ".repeat(stat.numberOfSpaces)}`, `${stat.symbolColor}`);
-        symbol.italic = false;
         addTag(line, symbol.get);
         let name = new jsonSegment(`${stat.name}: `, `gray`);
-        name.italic = false;
         addTag(line, name.get);
-        let value = new jsonSegment(`${getSign(values[0])}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`);
-        value.italic = false;
-        addTag(line, value.get);
-        console.log(value);
+        if(values[1] == 0){
+            let value = new jsonSegment(`${getSign(values[0])}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`);
+            addTag(line, value.get);
+        }else{
+            addTag(line,new jsonSegment(`${getSign(values[0])}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`).get);
+            addTag(line,new jsonSegment(` - `,`white`).get)
+            addTag(line,new jsonSegment(`${getSign(values[1])}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`).get);
+        }
         addTag(Lore, new Tag(line.length,[`'[`,`]'`],line));
+    }
+
+    if(!["","Material"].includes(type.name) && rarity){
+        let CustomEnchantments = [];
+        let start = new jsonSegment(`||`, shade( `#${colorCodes[rarity.color]}`,2/3));
+        start.obfuscated = true;
+        addTag(CustomEnchantments, new Tag(true, `""`));
+        addTag(CustomEnchantments, start.get);
+        for (let i = 0; i < rarities.indexOf(rarity)+1; i++) {
+            addTag(CustomEnchantments, new jsonSegment(` [`, shade(colorCodes.white,2/3)).get);
+            addTag(CustomEnchantments, new jsonSegment(`❌`, `white`).get);
+            addTag(CustomEnchantments, new jsonSegment(`] `, shade(colorCodes.white,2/3)).get);
+        }
+        let enchantements = new jsonSegment(`Enchantments`, rarity.color);
+        addTag(Lore, new Tag(true, [`'[`,`]'`],[new Tag(true, `""`), start.get,enchantements.get]));
+        addTag(Lore, new Tag(true, [`'[`,`]'`],CustomEnchantments));
     }
 
     addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
 
-    addTag(Lore, new Tag(get(`Can be upgraded? (has "This item can be upgraded" text) `), [`'[`,`]'`], [Object.assign(new jsonSegment(`This item can be upgraded`,`dark_gray`),{italic: false}).get]));
-
-    addTag(display, new Tag(Lore.length,[`Lore:[`,`]`], Lore));
-    addTag(nbt, new Tag(display.length,['display:{','}'],display));
-    addTag(nbt, new Tag(get("Description"),['Description:[',']'],[description.get]));
-
+    addTag(Lore, new Tag(get(`Can be upgraded? (has "This item can be upgraded" text) `), [`'[`,`]'`], [new jsonSegment(`This item can be upgraded`,`dark_gray`).get]));
     addTag(nbt,new Tag(get("Name"),`Name:'${get("Name")}'`));
     if(type){
         addTag(nbt,new Tag(get("Type"),`Type:'${type.name.toUpperCase()}'`));
@@ -195,7 +211,7 @@ function output(){
         if(!["","Material"].includes(type.name)){
             let CustomEnchantments = [];
             for (let i = 0; i < rarities.indexOf(rarity)+1; i++) {
-                CustomEnchantments.push(new Tag(true, `Slot${i}:""`))
+                CustomEnchantments.push(new Tag(true, `Slot${i}:-2`))
             }
             addTag(nbt, new Tag(true, [`CustomEnchantments:{`,`}`],CustomEnchantments));
         }
@@ -208,19 +224,17 @@ function output(){
             }
         }
         const AttributeModifiers = [];
-        addTag(AttributeModifiers, new Tag(true, `AttributeName:"minecraft:generic.luck",Amount:-0.000999999999,Operation:0,UUID:${type.attributeUuid.id},Slot:"${type.attributeUuid.slot}"`));
+        addTag(AttributeModifiers, new Tag(true, `{AttributeName:"minecraft:generic.luck",Amount:-0.000999999999,Operation:0,UUID:${type.attributeUuid.id},Slot:"${type.attributeUuid.slot}"}`));
         addTag(nbt, new Tag(true, [`AttributeModifiers:[`,`]`],AttributeModifiers));
     }
     if(rarity){
         addTag(nbt,new Tag(get("Rarity"),`Rarity:'${rarity.name.toUpperCase()}'`));
         addTag(nbt, new Tag(true, [`RarityColor:`,``],[new jsonSegment(``,rarity.color).get]));
         addTag(nbt, new Tag(true, [`LevelColor:`,``],[new jsonSegment(``,shade(rarity.color,2/3)).get]));
-        let raritynbt = [];
-        addTag(raritynbt, new jsonSegment(`${rarity.name.toUpperCase()} ${ type.name.toUpperCase()}`).get);
-        addTag(Lore, new Tag(raritynbt.length,[`'[`,`]'`],raritynbt));
+        let raritynbt = new jsonSegment(`${rarity.name.toUpperCase()} ${ type.name.toUpperCase()}`);
+        addTag(Lore, new Tag(true,[`'[`,`]'`],[raritynbt.get]));
     }
 
-    // output += `${input.canBeUpgraded === true ? ",Level:0,Upgradable:1b" : ""}${input.customModelData > 0 ? `,CustomModelData:${input.customModelData}` : ""},AttributeModifiers:[{AttributeName:"minecraft:generic.luck",Amount:-0.000999999999,Operation:0,UUID:${types[input.type].attributeUuid.id},Slot:"${types[input.type].attributeUuid.slot}"}]}`;
     addTag(nbt,new Tag(true, `HideFlags:127`));
     addTag(nbt,new Tag(true, `Unbreakable:1b`));
     if(get(`Can be upgraded? (has "This item can be upgraded" text) `)){
@@ -228,6 +242,10 @@ function output(){
         addTag(nbt, new Tag(true, `Upgradable:1b`));
     }
     addTag(nbt, new Tag(get(`CustomModelData`), `CustomModelData:${get(`CustomModelData`)}`));
+
+    addTag(display, new Tag(Lore.length,[`Lore:[`,`]`], Lore));
+    addTag(nbt, new Tag(display.length,['display:{','}'],display));
+    addTag(nbt, new Tag(get("Description"),['Description:[',']'],[description.get]));
 
     textarea.innerText= `/give @p ${get("Item ID")}{${getNBT(nbt)}}`;
 }
