@@ -115,6 +115,10 @@ const rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => {
     return hex.length === 1 ? '0' + hex : hex
   }).join('')
 
+function getDecimal(hex){
+    hex = hex.replace('#', '');
+    return (parseInt(hex.substr(0,2),16) * 256 + parseInt(hex.substr(2,2),16) * 1) * 256 + parseInt(hex.substr(4,2),16) * 1
+}
 
 function output(){
     const rarity = rarities.get("name", get("Rarity"));
@@ -123,16 +127,18 @@ function output(){
 
     let nbt = [];
     let display = [];
-
-    addTag(display,new Tag(get("display.color (leather armor only):") != "#a06540", `{Name:generic.max_health,Base:${get("display.color (leather armor only):")}d}`));
-
-    let Name = new jsonSegment(get("Name"), rarity.color);
-    addTag(display, new Tag(get("Name"),[`Name:'[`,`]'`],[Name.get]));
-
-    let description = new jsonSegment(get("Description"),"dark_gray");
-    description.italic = true;
     var Lore = [];
-    addTag(Lore, new Tag(get("Description"),[`'[`,`]'`],[ description.get]));
+
+    addTag(display,new Tag(get("display.color (leather armor only):") != "#a06540", `color:${getDecimal(get("display.color (leather armor only):"))}`));
+
+    let Name = new jsonSegment(get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`), rarity.color);
+    addTag(display, new Tag(get("Name"),[`Name:'[`,`]'`],[Name.get]));
+    let descriptionText = get("Description").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`).split('\n');
+    let description = [];
+    for(segement of descriptionText){
+        addTag(description, new Tag(true,[`'[`,`]'`],[Object.assign(new jsonSegment(segement,"dark_gray").get,{italic: true})]));
+    }
+    addTag(Lore, new Tag(true, getNBT(description)));
     addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
 
     let lastgroup = 1;
@@ -205,7 +211,7 @@ function output(){
     addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
 
     addTag(Lore, new Tag(get(`Can be upgraded? (has "This item can be upgraded" text) `), [`'[`,`]'`], [new jsonSegment(`This item can be upgraded`,`dark_gray`).get]));
-    addTag(nbt,new Tag(get("Name"),`Name:'${get("Name")}'`));
+    addTag(nbt,new Tag(get("Name"),`Name:'${get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`)}'`));
     if(type){
         addTag(nbt,new Tag(get("Type"),`Type:'${type.name.toUpperCase()}'`));
         addTag(nbt,new Tag(type.isTool,`isTool:1b`));
@@ -247,7 +253,7 @@ function output(){
 
     addTag(display, new Tag(Lore.length,[`Lore:[`,`]`], Lore));
     addTag(nbt, new Tag(display.length,['display:{','}'],display));
-    addTag(nbt, new Tag(get("Description"),['Description:[',']'],[description.get]));
+    addTag(nbt, new Tag(get("Description"),['Description:[',']'],description));
 
     textarea.innerText= `/give @p ${get("Item ID")}{${getNBT(nbt)}}`;
 }
