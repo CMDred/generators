@@ -133,10 +133,10 @@ function output(){
 
     let Name = new jsonSegment(get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`), rarity.color);
     addTag(display, new Tag(get("Name"),[`Name:'[`,`]'`],[Name.get]));
-    let descriptionText = get("Description").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`).split('\n');
+    let descriptionText = get("Description").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`).split('\\\\\\\\n');
     let description = [];
     for(segement of descriptionText){
-        addTag(description, new Tag(true,[`'[`,`]'`],[Object.assign(new jsonSegment(segement,"dark_gray").get,{italic: true})]));
+        addTag(description, new Tag(true, [`'`,`'`], [Object.assign(new jsonSegment(segement,"dark_gray"),{italic: true}).get]));
     }
     addTag(Lore, new Tag(true, getNBT(description)));
     addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
@@ -253,7 +253,7 @@ function output(){
 
     addTag(display, new Tag(Lore.length,[`Lore:[`,`]`], Lore));
     addTag(nbt, new Tag(display.length,['display:{','}'],display));
-    addTag(nbt, new Tag(get("Description"),[`Description:['[`,`]']`],description));
+    addTag(nbt, new Tag(get("Description"),[`Description:[`,`]`],description));
 
     textarea.innerText= `/give @p ${get("Item ID")}{${getNBT(nbt)}}`;
 }
