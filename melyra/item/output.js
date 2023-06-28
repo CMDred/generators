@@ -237,8 +237,8 @@ function output(){
     }
     if(rarity){
         addTag(nbt,new Tag(get("Rarity"),`Rarity:'${rarity.name.toUpperCase()}'`));
-        addTag(nbt, new Tag(true, [`RarityColor:`,``],[new jsonSegment(``,rarity.color).get]));
-        addTag(nbt, new Tag(true, [`LevelColor:`,``],[new jsonSegment(``,shade(rarity.color,2/3)).get]));
+        addTag(nbt, new Tag(true, [`RarityColor:'`,`'`],[new jsonSegment(``,rarity.color).get]));
+        addTag(nbt, new Tag(true, [`LevelColor:'`,`'`],[new jsonSegment(``,shade(rarity.color,2/3)).get]));
         let raritynbt = new jsonSegment(`${rarity.name.toUpperCase()} ${ type.name.toUpperCase()}`, rarity.color);
         addTag(Lore, new Tag(true,[`'[`,`]'`],[raritynbt.get]));
     }
@@ -253,7 +253,7 @@ function output(){
 
     addTag(display, new Tag(Lore.length,[`Lore:[`,`]`], Lore));
     addTag(nbt, new Tag(display.length,['display:{','}'],display));
-    addTag(nbt, new Tag(get("Description"),['Description:[',']'],description));
+    addTag(nbt, new Tag(get("Description"),[`Description:['[`,`]']`],description));
 
     textarea.innerText= `/give @p ${get("Item ID")}{${getNBT(nbt)}}`;
 }
