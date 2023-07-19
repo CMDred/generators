@@ -135,22 +135,26 @@ function output(){
     addTag(display, new Tag(get("Name"),[`Name:'[`,`]'`],[Name.get]));
     let descriptionText = get("Description").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`).split('\\\\\\\\n');
     let description = [];
-    for(segement of descriptionText){
-        addTag(description, new Tag(true, [`'`,`'`], [Object.assign(new jsonSegment(segement,"dark_gray"),{italic: true}).get]));
+    if(descriptionText.length > 1 || descriptionText[0] != ""){
+        for(segement of descriptionText){
+            addTag(description, new Tag(true, [`'`,`'`], [Object.assign(new jsonSegment(segement,"dark_gray"),{italic: true}).get]));
+        }
+        addTag(Lore, new Tag(true, getNBT(description)));
+        //addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
     }
-    addTag(Lore, new Tag(true, getNBT(description)));
-    addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
 
-    let lastgroup = 1;
+    let lastgroup = 0;
 
+    let hasStat = false;
     if(document.getElementsByClassName("hidestat2").length == statData.length){//all stats are a set value
         let stats = [];
         for(const stat of statData){
             let values = get(stat.id);
             if(values[0]){
+                hasStat = true;
                 addStatToLore(stat,values);
+                addTag(stats, new Tag(values[0], `${stat.nbt}:${values[0]}`));
             }
-            addTag(stats, new Tag(values[0], `${stat.nbt}:${values[0]}`));
         }
         addTag(nbt, new Tag(stats.length,['Stats:{','}'],stats));
         addTag(nbt, new Tag(stats.length,['BaseStats:{','}'],stats));
@@ -159,13 +163,14 @@ function output(){
         for(const stat of statData){
             let values = get(stat.id);
             if(values[0]){
+                hasStat = true;
                 addStatToLore(stat,values);
-            }
-            addTag(RandomStats, new Tag(values[0], `Min_${stat.nbt}:${values[0]}`));
-            if(values[0] && ! values[1]){//second value isn't set
-                addTag(RandomStats, new Tag(values[0], `Max_${stat.nbt}:${values[0]}`));
-            }else{//full range is set
-                addTag(RandomStats, new Tag(values[1], `Max_${stat.nbt}:${values[1]}`));
+                addTag(RandomStats, new Tag(values[0], `Min_${stat.nbt}:${values[0]}`));
+                if(!values[1]){//second value isn't set
+                    addTag(RandomStats, new Tag(values[0], `Max_${stat.nbt}:${values[0]}`));
+                }else{//full range is set
+                    addTag(RandomStats, new Tag(values[1], `Max_${stat.nbt}:${values[1]}`));
+                }
             }
         }
         addTag(nbt, new Tag(RandomStats.length,['RandomStats:{','}'],RandomStats));
@@ -193,6 +198,9 @@ function output(){
     }
 
     if(!["","Material"].includes(type.name) && rarity){
+        if(hasStat){
+            addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
+        }
         let CustomEnchantments = [];
         let start = new jsonSegment(`||`, shade( `#${colorCodes[rarity.color]}`,2/3));
         start.obfuscated = true;
