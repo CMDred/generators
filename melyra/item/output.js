@@ -251,7 +251,7 @@ function output(){
     if(rarity){
         addTag(nbt,new Tag(get("Rarity"),`Rarity:'${rarity.name.toUpperCase()}'`));
         addTag(nbt, new Tag(true, [`RarityColor:'`,`'`],[new jsonSegment(``,rarity.color).get]));
-        addTag(nbt, new Tag(true, [`LevelColor:'`,`'`],[new jsonSegment(``,shade(rarity.color,2/3)).get]));
+        addTag(nbt, new Tag(true, [`LevelColor:'`,`'`],[new jsonSegment(``,shade(colorCodes[rarity.color],2/3)).get]));
         let raritynbt = new jsonSegment(`${rarity.name.toUpperCase()} ${ type.name.toUpperCase()}`, rarity.color);
         raritynbt.bold = true;
         addTag(Lore, new Tag(true,[`'[`,`]'`],[raritynbt.get]));
