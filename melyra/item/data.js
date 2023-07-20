@@ -38,7 +38,7 @@ const statData = [
     { id: "drawSpeed", group: 2, symbol: "➹", numberOfSpaces: 1, symbolColor: "green", numberColor: "red", name: "Draw Speed", nbt: "DrawSpeed", isPercentage: true },
     { id: "overdraw", group: 2, symbol: "🏹", numberOfSpaces: 1, symbolColor: "blue", numberColor: "red", name: "Overdraw", nbt: "Overdraw", isPercentage: true },
     { id: "attackSpeed", group: 2, symbol: "✲", numberOfSpaces: 1, symbolColor: "yellow", numberColor: "red", name: "Attack Speed", nbt: "AttackSpeed", isPercentage: true },
-    { id: "lifeSteal", group: 2, symbol: "♡", numberOfSpaces: 1, symbolColor: "white", numberColor: "red", name: "Life Steal", nbt: "LifeSteal", isPercentage: true },
+    // { id: "lifeSteal", group: 2, symbol: "♡", numberOfSpaces: 1, symbolColor: "white", numberColor: "red", name: "Life Steal", nbt: "LifeSteal", isPercentage: true },
     { id: "mana", group: 2, symbol: "₪", numberOfSpaces: 1, symbolColor: "aqua", numberColor: "red", name: "Mana", nbt: "Mana", isPercentage: false },
     { id: "magicDamage", group: 2, symbol: "✯", numberOfSpaces: 1, symbolColor: "aqua", numberColor: "red", name: "Magic Damage", nbt: "MagicDamage", isPercentage: false },
 
