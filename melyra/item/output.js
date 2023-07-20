@@ -49,6 +49,7 @@ class Tag {
 class jsonSegment {
     italic = false
     obfuscated
+    bold
     constructor(value, color) {
         this.value = value;
         this.color = color;
@@ -60,6 +61,7 @@ class jsonSegment {
         addTag(segment, new Tag(this.color != undefined,`"color":"${this.color}"`));
         addTag(segment, new Tag(this.italic != undefined,`"italic":"${this.italic}"`));
         addTag(segment, new Tag(this.obfuscated != undefined,`"obfuscated":"${this.obfuscated}"`));
+        addTag(segment, new Tag(this.bold != undefined,`"bold":"${this.bold}"`));
         return new Tag(true,[`{`,`}`],segment);
     }
 }
@@ -251,6 +253,7 @@ function output(){
         addTag(nbt, new Tag(true, [`RarityColor:'`,`'`],[new jsonSegment(``,rarity.color).get]));
         addTag(nbt, new Tag(true, [`LevelColor:'`,`'`],[new jsonSegment(``,shade(rarity.color,2/3)).get]));
         let raritynbt = new jsonSegment(`${rarity.name.toUpperCase()} ${ type.name.toUpperCase()}`, rarity.color);
+        raritynbt.bold = true;
         addTag(Lore, new Tag(true,[`'[`,`]'`],[raritynbt.get]));
     }
 
