@@ -258,6 +258,10 @@ function output(){
         addTag(nbt, new Tag(true, `Upgradable:1b`));
     }
     addTag(nbt, new Tag(get(`CustomModelData`), `CustomModelData:${get(`CustomModelData`)}`));
+    addTag(nbt, new Tag(get(`RandomCustomModelData`), `RandomCustomModelData:${get(`RandomCustomModelData`)}`));
+
+    let RandomName = new jsonSegment(get("RandomName").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`), rarity.color);
+    addTag(nbt, new Tag(get("RandomName"),[`RandomName:'[`,`]'`],[RandomName.get]));
 
     addTag(display, new Tag(Lore.length,[`Lore:[`,`]`], Lore));
     addTag(nbt, new Tag(display.length,['display:{','}'],display));

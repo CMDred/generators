@@ -62,3 +62,7 @@ p p{
     vertical-align: top;
     height: 43px;
 }
+
+.hide{
+    display: none;
+}

@@ -1,6 +1,7 @@
 let settings = [
     {"name":"Item ID","type":"text"},
     {"name":"Name","type":"text"},
+    {"name":"RandomName","type":"text","hidden":"hasSecondStat"},
     {"type":"html","value":"<br><p>Enter the description of the item. Use \n to begin a new line.</p>"},
     {"name":"Description","type":"text"},
     {"name":"Rarity","type":"select","options":rarities.map(rarity => rarity.name.toLowerCase())},
@@ -11,7 +12,8 @@ let settings = [
     {"type":"html","value":"<br><p>Additional Values (leave at default to ignore)</p>"},
     {"name":"SkullOwner (Enter Value or Username):","type":"text"},
     {"name":"display.color (leather armor only):","type":"color"},
-    {"name":"CustomModelData","type":"text"}
+    {"name":"CustomModelData","type":"number"},
+    {"name":"RandomCustomModelData","type":"number","hidden":"hasSecondStat"}
 ];
 
 function statSettings() {
@@ -22,6 +24,10 @@ function statSettings() {
     return settings;
 }
 
+function hasStatRange(){
+    return document.getElementsByClassName("hidestat2").length != statData.length
+}
+
 document.title = "Melyra Item Generator";
 
 var options = document.getElementById("options");
@@ -30,10 +36,16 @@ var options = document.getElementById("options");
 function generateSetting(option){
     if(option.type == "html"){
         let setting = document.createElement("div");
+        if(option.hidden){
+            setting.classList.add('hide')
+        }
         setting.innerHTML = option.value;
         return setting;
     }
     let setting = document.createElement("p");
+    if(option.hidden){
+        setting.classList.add('hide')
+    }
 
     let label = document.createElement("label");
     label.innerText = option.name;
@@ -73,7 +85,7 @@ function generateSetting(option){
             let container = document.createElement("div");
             let toggle = document.createElement("button");
             toggle.innerText = 'toggle range';
-            toggle.onclick = ((e) => e.target.parentElement.children[1].classList.toggle("hidestat2"))
+            toggle.onclick = (e) => toggleStat(e)
             let input1 = document.createElement("input");
             input1.type = "number";
             input1.onchange = (() => output());
@@ -96,6 +108,22 @@ function generateSetting(option){
             break;
     }
     return setting;
+}
+
+function toggleStat(e) {
+    e.target.parentElement.children[1].classList.toggle("hidestat2")
+    for(let setting in settings){
+        if(settings[setting].hidden == "hasSecondStat"){
+            let element = options.children[setting];
+            if(hasStatRange()){
+                element.classList.remove('hide')
+            }else{
+                element.classList.add('hide')
+            }
+        }
+    }
+    //RandomCustomModelData
+    //RandomName
 }
 
 
