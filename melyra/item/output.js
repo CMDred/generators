@@ -241,6 +241,9 @@ function output(){
         }
         const AttributeModifiers = [];
         addTag(AttributeModifiers, new Tag(true, `{AttributeName:"minecraft:generic.luck",Amount:-0.000999999999,Operation:0,UUID:${type.attributeUuid.id},Slot:"${type.attributeUuid.slot}"}`));
+        if(type.name == "Bow"){
+            addTag(AttributeModifiers, new Tag(true, `{AttributeName:"generic.attack_speed",Amount:-999,Operation:0,UUID:${type.attributeUuid.id},Slot:"${type.attributeUuid.slot}"}`));
+        }
         addTag(nbt, new Tag(true, [`AttributeModifiers:[`,`]`],AttributeModifiers));
     }
     if(rarity){
