@@ -204,7 +204,7 @@ function output(){
             addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
         }
         let CustomEnchantments = [];
-        let start = new jsonSegment(`||`, shade( `#${colorCodes[rarity.color]}`,2/3));
+        let start = new jsonSegment(`||`, rarity.color);
         start.obfuscated = true;
         addTag(CustomEnchantments, new Tag(true, `""`));
         addTag(CustomEnchantments, start.get);
