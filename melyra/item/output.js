@@ -124,6 +124,7 @@ function getDecimal(hex){
 
 function output(){
     const rarity = rarities.get("name", get("Rarity"));
+    const TypeID = TypeIDs.get("name", get("TypeID"));
     const type = types.get("name", get("Type"));
 
 
@@ -222,11 +223,12 @@ function output(){
 
     addTag(Lore, new Tag(get(`Can be upgraded? (has "This item can be upgraded" text) `), [`'[`,`]'`], [new jsonSegment(`This item can be upgraded`,`dark_gray`).get]));
     addTag(nbt,new Tag(get("Name"),`Name:'${get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`)}'`));
-    if(type){
+    if(TypeID){
         addTag(nbt,new Tag(get("Type"),`Type:'${type.name.toUpperCase()}'`));
-        addTag(nbt,new Tag(type.isTool,`isTool:1b`));
+        addTag(nbt,new Tag(get("TypeID"),`TypeID:'${TypeIDs.indexOf(TypeID)}'`)); 
+        addTag(nbt,new Tag(TypeID.isTool,`isTool:1b`));
 
-        if(!["","Material"].includes(type.name) && document.getElementsByClassName("hidestat2").length == statData.length){
+        if(!["","Material"].includes(TypeID.name) && document.getElementsByClassName("hidestat2").length == statData.length){
             let CustomEnchantments = [];
             for (let i = 0; i < rarities.indexOf(rarity)+1; i++) {
                 CustomEnchantments.push(new Tag(true, `Slot${i}:-2`))
@@ -242,9 +244,9 @@ function output(){
             }
         }
         const AttributeModifiers = [];
-        addTag(AttributeModifiers, new Tag(true, `{AttributeName:"minecraft:generic.luck",Amount:-0.000999999999,Operation:0,UUID:${type.attributeUuid.id},Slot:"${type.attributeUuid.slot}"}`));
-        if(type.name == "Bow"){
-            addTag(AttributeModifiers, new Tag(true, `{AttributeName:"generic.attack_speed",Amount:-999,Operation:0,UUID:${type.attributeUuid.id},Slot:"${type.attributeUuid.slot}"}`));
+        addTag(AttributeModifiers, new Tag(true, `{AttributeName:"minecraft:generic.luck",Amount:-0.000999999999,Operation:0,UUID:${TypeID.attributeUuid.id},Slot:"${TypeID.attributeUuid.slot}"}`));
+        if(TypeID.name == "Bow"){
+            addTag(AttributeModifiers, new Tag(true, `{AttributeName:"generic.attack_speed",Amount:-999,Operation:0,UUID:${TypeID.attributeUuid.id},Slot:"${TypeID.attributeUuid.slot}"}`));
         }
         addTag(nbt, new Tag(true, [`AttributeModifiers:[`,`]`],AttributeModifiers));
     }

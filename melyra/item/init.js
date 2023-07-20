@@ -6,6 +6,7 @@ let settings = [
     {"name":"Description","type":"text"},
     {"name":"Rarity","type":"select","options":rarities.map(rarity => rarity.name.toLowerCase())},
     {"name":"Type","type":"autocomplete","options":types.map(type => type.name.toLowerCase())},
+    {"name":"TypeID","type":"autocomplete","options":TypeIDs.map(type => type.name.toLowerCase())},
     {"name":`Can be upgraded? (has "This item can be upgraded" text) `,"type":"checkbox"},
     {"type":"html","value":"<br><p>Base Stats (leave at 0 if you don't want it applied to the item)</p>"},
     ...statSettings(),
