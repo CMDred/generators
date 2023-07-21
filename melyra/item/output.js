@@ -225,7 +225,7 @@ function output(){
     addTag(nbt,new Tag(get("Name"),`Name:'${get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`)}'`));
     if(TypeID){
         addTag(nbt,new Tag(get("Type"),`Type:'${type.toUpperCase()}'`));
-        addTag(nbt,new Tag(get("TypeID"),`TypeID:'${TypeIDs.indexOf(TypeID)}'`)); 
+        addTag(nbt,new Tag(TypeID,`TypeID:${TypeIDs.indexOf(TypeID)}`)); 
         addTag(nbt,new Tag(TypeID.isTool,`isTool:1b`));
 
         if(!["","Material"].includes(TypeID.name) && document.getElementsByClassName("hidestat2").length == statData.length){
