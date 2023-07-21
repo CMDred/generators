@@ -1,17 +1,17 @@
 let settings = [
-    {"name":"Item ID","type":"text"},
-    {"name":"Name","type":"text"},
-    {"name":"RandomName","type":"text","hidden":"hasSecondStat"},
+    {"name":"Item ID","type":"text","placeholder":"stone or minecraft:stone"},
+    {"name":"Name","type":"text","placeholder":"Unidentified sword"},
+    {"name":"RandomName","type":"text","hidden":"hasSecondStat","placeholder":"Master Sword"},
     {"type":"html","value":"<br><p>Enter the description of the item. Use \n to begin a new line.</p>"},
-    {"name":"Description","type":"text"},
+    {"name":"Description","type":"text","placeholder":"Sword that Seals the Darkness"},
     {"name":"Rarity","type":"select","options":rarities.map(rarity => rarity.name.toLowerCase())},
-    {"name":"Type","type":"text"},
-    {"name":"TypeID","type":"autocomplete","options":TypeIDs.map(type => type.name.toLowerCase())},
+    {"name":"Type","type":"text","placeholder":"spear"},
+    {"name":"TypeID","type":"autocomplete","options":TypeIDs.map(type => type.name.toLowerCase()),"placeholder":"sword"},
     {"name":`Can be upgraded? (has "This item can be upgraded" text) `,"type":"checkbox"},
     {"type":"html","value":"<br><p>Base Stats (leave at 0 if you don't want it applied to the item)</p>"},
     ...statSettings(),
     {"type":"html","value":"<br><p>Additional Values (leave at default to ignore)</p>"},
-    {"name":"SkullOwner (Enter Value or Username):","type":"text"},
+    {"name":"SkullOwner (Enter Value or Username):","type":"text","placeholder":"GamingRedPandas"},
     {"name":"display.color (leather armor only):","type":"color"},
     {"name":"CustomModelData","type":"number"},
     {"name":"RandomCustomModelData","type":"number","hidden":"hasSecondStat"}
@@ -109,6 +109,9 @@ function generateSetting(option){
         default:
 
             break;
+    }
+    if(option.placeholder){
+        input.placeholder = option.placeholder;
     }
     return setting;
 }
