@@ -65,12 +65,14 @@ function generateSetting(option){
         case "autocomplete":
             setting.classList.add("autocomplete");
             input = document.createElement("input");
+            input.onchange = (() => output());
             input.type = "text";
             new Autocomplete(input,option.options);
             setting.append(input);
             break;
         case "select":
             input = document.createElement("select");
+            input.onchange = (() => output());
             setting.append(input);
             for(option of option.options){
                 input.append(Object.assign(document.createElement("option"), {value:option, innerText:option}));
