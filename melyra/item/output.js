@@ -124,7 +124,7 @@ function getDecimal(hex){
 
 function output(){
     const rarity = rarities.get("name", get("Rarity"));
-    const TypeID = TypeIDs.get("name", get("TypeID"));
+    const TypeID = /\d+/.test(get("TypeID")) ? TypeIDs[parseInt(get("TypeID"))] : TypeIDs.get("name", get("TypeID"));
     const type = get("Type");
 
 
