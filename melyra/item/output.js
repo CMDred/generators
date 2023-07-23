@@ -219,7 +219,6 @@ function output(){
     addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
 
     addTag(Lore, new Tag(get(`Can be upgraded? (has "This item can be upgraded" text) `), [`'[`,`]'`], [new jsonSegment(`This item can be upgraded`,`dark_gray`).get]));
-    addTag(nbt,new Tag(get("Name"),`Name:'${get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`)}'`));
     if(TypeID){
         addTag(nbt,new Tag(TypeID,`TypeID:${TypeID}`)); 
 
