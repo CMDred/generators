@@ -235,7 +235,11 @@ function output(){
             for (let i = 0; i < rarities.indexOf(rarity)+1; i++) {
                 CustomEnchantments.push(new Tag(true, `Slot${i}:-2`))
             }
-            addTag(nbt, new Tag(true, [`CustomEnchantments:{`,`}`],CustomEnchantments));
+            if(hasStatRange()){
+                addTag(nbt, new Tag(true, [`RandomEnchantments:{`,`}`],CustomEnchantments));
+            }else{
+                addTag(nbt, new Tag(true, [`CustomEnchantments:{`,`}`],CustomEnchantments));
+            }
         }
         let SkullOwner = get("SkullOwner (Enter Value or Username):");
         if(get("Item ID") == "player_head" && SkullOwner){
