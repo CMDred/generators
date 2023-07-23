@@ -2,7 +2,7 @@ let settings = [
     {"name":"Item ID","type":"text","placeholder":"stone or minecraft:stone"},
     {"name":"Name","type":"text","placeholder":"Unidentified sword"},
     {"name":"RandomName","type":"text","hidden":"hasSecondStat","placeholder":"Master Sword"},
-    {"type":"html","value":"<br><p>Enter the description of the item. Use \n to begin a new line.</p>"},
+    {"type":"html","value":"<br><p>Enter the description of the item. Use \\n to begin a new line.</p>"},
     {"name":"Description","type":"text","placeholder":"Sword that Seals the Darkness"},
     {"name":"Rarity","type":"select","options":rarities.map(rarity => rarity.name.toLowerCase())},
     {"name":"Type","type":"text","placeholder":"spear"},
@@ -79,10 +79,12 @@ function generateSetting(option){
             }
             break;
         case "checkbox":
-            input = document.createElement("input");
-            input.type = "checkbox";
-            input.onchange = (() => output());
-            setting.append(input);
+            let sliderContainer = NewElement("label", "switch");
+            let a = Object.assign(NewElement("input"),{type:"checkbox", onchange: (function () {output()})})
+            NewElement("span","slider")
+            sliderContainer.append(a, NewElement("span","slider"))
+
+            setting.append(sliderContainer);
             break;
         case "stat":
             let container = document.createElement("div");

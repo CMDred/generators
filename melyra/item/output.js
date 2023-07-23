@@ -28,6 +28,8 @@ function getvalue(settings,name){
                 break;
             case "DIV":
                 return [option.children[0].value,option.children[1].value];
+            case "LABEL"://checkbox/slider
+                return option.children[0].checked
             case "SELECT":
                 return option.value;
             default:
@@ -276,4 +278,5 @@ function output(){
     addTag(nbt, new Tag(get("Description"),[`Description:[`,`]`],description));
 
     textarea.innerText= `/give @p ${get("Item ID")}{${getNBT(nbt)}}`;
+    preview(Name,Lore);
 }

@@ -7,10 +7,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="options"></div>
-    <textarea class="output" readonly="" id="output" spellcheck="false" placeholder="Your generated command will show here."></textarea>
-    <script src="data.js"></script>
-    <script src="output.js"></script>
-    <script src="init.js"></script>
-    <br>
+    <div class="container">
+        <div id="options"></div>
+        <div id="preview">
+            <canvas id="Item_Icon"></canvas>
+            <div id="ToolTip"></div>
+        </div>
+        <textarea class="output" readonly="" id="output" spellcheck="false" placeholder="Your generated command will show here."></textarea>
+        <script src="util.js"></script>
+        <script src="data.js"></script>
+        <script src="preview.js"></script>
+        <script src="output.js"></script>
+        <script src="init.js"></script>
+        <br>
+    </div>
 </body>
