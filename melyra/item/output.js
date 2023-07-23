@@ -139,6 +139,7 @@ function output(){
     let Name = new jsonSegment(get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`), rarity.color);
     addTag(display, new Tag(get("Name"),[`Name:'[`,`]'`],[Name.get]));
     let descriptionText = get("Description").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`).split('\\\\\\\\n');
+    addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(`[${Type} | ${rarity}]` , "white").get]));
     let description = [];
     if(descriptionText.length > 1 || descriptionText[0] != ""){
         for(segement of descriptionText){
@@ -196,7 +197,7 @@ function output(){
         addTag(Lore, new Tag(line.length,[`'[`,`]'`],line));
     }
 
-    if(Type && rarity){
+    if(TypeID && rarity){
         if(hasStat){
             addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
         }
@@ -219,8 +220,8 @@ function output(){
 
     addTag(Lore, new Tag(get(`Can be upgraded? (has "This item can be upgraded" text) `), [`'[`,`]'`], [new jsonSegment(`This item can be upgraded`,`dark_gray`).get]));
     addTag(nbt,new Tag(get("Name"),`Name:'${get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`)}'`));
-    if(Type){
-        addTag(nbt,new Tag(Type,`TypeID:${Type}`)); 
+    if(TypeID){
+        addTag(nbt,new Tag(TypeID,`TypeID:${TypeID}`)); 
 
         if(document.getElementsByClassName("hidestat2").length == statData.length){
             let CustomEnchantments = [];
@@ -243,7 +244,7 @@ function output(){
         }
         const AttributeModifiers = [];
         let attributeUuid;
-        switch (Type) {
+        switch (TypeID) {
             case 1:
                 attributeUuid = attributeUuids.HEAD;
                 break;
