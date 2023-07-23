@@ -184,7 +184,7 @@ function output(){
         let line = [];
         let symbol = new jsonSegment(`${stat.symbol}${" ".repeat(stat.numberOfSpaces)}`, `${stat.symbolColor}`);
         addTag(line, symbol.get);
-        let name = new jsonSegment(`${stat.name}: `, `gray`);
+        let name = new jsonSegment(`${stat.name} `, `gray`);
         addTag(line, name.get);
         if(values[1] == 0){
             let value = new jsonSegment(`${getSign(values[0])}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`);
