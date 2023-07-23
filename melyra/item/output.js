@@ -31,7 +31,7 @@ function getvalue(settings,name){
             case "LABEL"://checkbox/slider
                 return option.children[0].checked
             case "SELECT":
-                return option.value;
+                return option.selectedIndex;
             default:
                 alert("unknown tagName: " + option.tagName);
                 break;
@@ -125,8 +125,9 @@ function getDecimal(hex){
 }
 
 function output(){
-    const rarity = rarities.get("name", get("Rarity"));
-    const TypeID = /\d+/.test(get("TypeID")) ? TypeIDs[parseInt(get("TypeID"))] : TypeIDs.get("name", get("TypeID"));
+    const rarity = rarities[get("Rarity")];
+    const TypeID = get('Type');
+    const Type = Types[TypeID];
 
 
     let nbt = [];
@@ -195,7 +196,7 @@ function output(){
         addTag(Lore, new Tag(line.length,[`'[`,`]'`],line));
     }
 
-    if(TypeIDs.indexOf(TypeID) && rarity){
+    if(Type && rarity){
         if(hasStat){
             addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
         }
@@ -218,11 +219,10 @@ function output(){
 
     addTag(Lore, new Tag(get(`Can be upgraded? (has "This item can be upgraded" text) `), [`'[`,`]'`], [new jsonSegment(`This item can be upgraded`,`dark_gray`).get]));
     addTag(nbt,new Tag(get("Name"),`Name:'${get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`)}'`));
-    if(TypeID){
-        addTag(nbt,new Tag(TypeID,`TypeID:${TypeIDs.indexOf(TypeID)}`)); 
-        addTag(nbt,new Tag(TypeID.isTool,`isTool:1b`));
+    if(Type){
+        addTag(nbt,new Tag(Type,`TypeID:${Type}`)); 
 
-        if(!["","Material"].includes(TypeID.name) && document.getElementsByClassName("hidestat2").length == statData.length){
+        if(document.getElementsByClassName("hidestat2").length == statData.length){
             let CustomEnchantments = [];
             for (let i = 0; i < rarities.indexOf(rarity)+1; i++) {
                 CustomEnchantments.push(new Tag(true, `Slot${i}:-2`))
@@ -242,14 +242,32 @@ function output(){
             }
         }
         const AttributeModifiers = [];
-        addTag(AttributeModifiers, new Tag(true, `{AttributeName:"minecraft:generic.luck",Amount:-0.000999999999,Operation:0,UUID:${TypeID.attributeUuid.id},Slot:"${TypeID.attributeUuid.slot}"}`));
+        let attributeUuid;
+        switch (Type) {
+            case 1:
+                attributeUuid = attributeUuids.HEAD;
+                break;
+            case 2:
+                attributeUuid = attributeUuids.CHEST;
+                break;
+            case 3:
+                attributeUuid = attributeUuids.LEGS;
+                break;
+            case 4:
+                attributeUuid = attributeUuids.FEET;
+                break;
+            default:
+                attributeUuid = attributeUuids.MAINHAND;
+                break;
+        }
+        addTag(AttributeModifiers, new Tag(true, `{AttributeName:"minecraft:generic.luck",Amount:-0.000999999999,Operation:0,UUID:${attributeUuid.id},Slot:"${attributeUuid.slot}"}`));
         if(["bow", "minecraft:bow"].includes(get("Item ID").toLocaleLowerCase())){
-            addTag(AttributeModifiers, new Tag(true, `{AttributeName:"generic.attack_speed",Amount:-999,Operation:0,UUID:${TypeID.attributeUuid.id},Slot:"${TypeID.attributeUuid.slot}"}`));
+            addTag(AttributeModifiers, new Tag(true, `{AttributeName:"generic.attack_speed",Amount:-999,Operation:0,UUID:${attributeUuid.id},Slot:"${attributeUuid.slot}"}`));
         }
         addTag(nbt, new Tag(true, [`AttributeModifiers:[`,`]`],AttributeModifiers));
     }
     if(rarity){
-        addTag(nbt,new Tag(get("Rarity"),`Rarity:'${rarity.name.toUpperCase()}'`));
+        addTag(nbt,new Tag(true,`Rarity:'${rarity.name.toUpperCase()}'`));
         addTag(nbt, new Tag(true, [`RarityColor:'`,`'`],[new jsonSegment(``,rarity.color).get]));
         addTag(nbt, new Tag(true, [`LevelColor:'`,`'`],[new jsonSegment(``,shade(colorCodes[rarity.color],2/3)).get]));
     }
