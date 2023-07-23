@@ -99,8 +99,8 @@ Array.prototype.get = function(key, value){
     return item ? item : false;
 }
 
-function getSign(number) {
-    if (number >= 0) {
+function getSign(number, isPercentage) {
+    if (number >= 0 && isPercentage) {
         return "+" + number;
     }
     return number;
@@ -139,7 +139,11 @@ function output(){
     let Name = new jsonSegment(get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`), rarity.color);
     addTag(display, new Tag(get("Name"),[`Name:'[`,`]'`],[Name.get]));
     let descriptionText = get("Description").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`).split('\\\\\\\\n');
-    addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(`[${Type} | ${rarity}]` , "white").get]));
+    if(TypeID){
+        addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(`[${Type} | ${rarity.name}]` , "white").get]));
+    }else{
+        addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(`[${rarity.name}]` , "white").get]));
+    }
     let description = [];
     if(descriptionText.length > 1 || descriptionText[0] != ""){
         for(segement of descriptionText){
@@ -187,12 +191,12 @@ function output(){
         let name = new jsonSegment(`${stat.name} `, `gray`);
         addTag(line, name.get);
         if(values[1] == 0){
-            let value = new jsonSegment(`${getSign(values[0])}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`);
+            let value = new jsonSegment(`${getSign(values[0],stat.isPercentage)}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`);
             addTag(line, value.get);
         }else{
-            addTag(line,new jsonSegment(`${getSign(values[0])}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`).get);
+            addTag(line,new jsonSegment(`${getSign(values[0],stat.isPercentage)}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`).get);
             addTag(line,new jsonSegment(` - `,`white`).get)
-            addTag(line,new jsonSegment(`${getSign(values[1])}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`).get);
+            addTag(line,new jsonSegment(`${getSign(values[1],stat.isPercentage)}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`).get);
         }
         addTag(Lore, new Tag(line.length,[`'[`,`]'`],line));
     }
