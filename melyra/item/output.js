@@ -151,34 +151,27 @@ function output(){
     let lastgroup = 0;
 
     let hasStat = false;
-    if(document.getElementsByClassName("hidestat2").length == statData.length){//all stats are a set value
-        let stats = [];
-        for(const stat of statData){
-            let values = get(stat.id);
-            if(values[0]){
-                hasStat = true;
-                addStatToLore(stat,values);
-                addTag(stats, new Tag(values[0], `${stat.nbt}:${values[0]}`));
-            }
-        }
-        addTag(nbt, new Tag(stats.length,['Stats:{','}'],stats));
-        addTag(nbt, new Tag(stats.length,['BaseStats:{','}'],stats));
-    }else{//at least one stat is a range
-        let RandomStats = [];
-        for(const stat of statData){
-            let values = get(stat.id);
-            if(values[0]){
-                hasStat = true;
-                addStatToLore(stat,values);
+    let Stats = [];
+    let RandomStats = [];
+    for(const stat of statData){
+        let values = get(stat.id);
+        if(values[0]){//the stat has a value
+            hasStat = true;
+            if(values[1]){
                 addTag(RandomStats, new Tag(values[0], `Min_${stat.nbt}:${values[0]}`));
-                if(!values[1]){//second value isn't set
-                    addTag(RandomStats, new Tag(values[0], `Max_${stat.nbt}:${values[0]}`));
-                }else{//full range is set
-                    addTag(RandomStats, new Tag(values[1], `Max_${stat.nbt}:${values[1]}`));
-                }
+                addTag(RandomStats, new Tag(values[1], `Max_${stat.nbt}:${values[1]}`));
+            }else{
+                addTag(Stats, new Tag(values[0], `${stat.nbt}:${values[0]}`));
             }
         }
+    }
+
+    if(hasStatRange()){
         addTag(nbt, new Tag(RandomStats.length,['RandomStats:{','}'],RandomStats));
+        addTag(nbt, new Tag(Stats.length,['BaseStats:{','}'],Stats));
+    }else{
+        addTag(nbt, new Tag(Stats.length,['Stats:{','}'],Stats));
+        addTag(nbt, new Tag(Stats.length,['BaseStats:{','}'],Stats));
     }
 
     function addStatToLore(stat, values) {
