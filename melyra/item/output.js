@@ -275,9 +275,9 @@ function output(){
     addTag(nbt,new Tag(true, `HideFlags:127`));
     addTag(nbt,new Tag(true, `Unbreakable:1b`));
     if(get(`Can be upgraded? (has "This item can be upgraded" text) `)){
-        addTag(nbt, new Tag(true, `Level:0`));
         addTag(nbt, new Tag(true, `Upgradable:1b`));
     }
+    addTag(nbt, new Tag(true, `Level:0`));
     addTag(nbt, new Tag(get(`CustomModelData`), `CustomModelData:${get(`CustomModelData`)}`));
     addTag(nbt, new Tag(get(`RandomCustomModelData`), `RandomCustomModelData:${get(`RandomCustomModelData`)}`));
 
