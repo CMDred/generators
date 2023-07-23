@@ -269,7 +269,6 @@ function output(){
     if(rarity){
         addTag(nbt,new Tag(true,`Rarity:'${rarity.name.toUpperCase()}'`));
         addTag(nbt, new Tag(true, [`RarityColor:'`,`'`],[new jsonSegment(``,rarity.color).get]));
-        addTag(nbt, new Tag(true, [`LevelColor:'`,`'`],[new jsonSegment(``,shade(colorCodes[rarity.color],2/3)).get]));
     }
 
     addTag(nbt,new Tag(true, `HideFlags:127`));
