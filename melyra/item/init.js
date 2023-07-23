@@ -5,7 +5,6 @@ let settings = [
     {"type":"html","value":"<br><p>Enter the description of the item. Use \\n to begin a new line.</p>"},
     {"name":"Description","type":"text","placeholder":"Sword that Seals the Darkness"},
     {"name":"Rarity","type":"select","options":rarities.map(rarity => rarity.name.toLowerCase())},
-    {"name":"Type","type":"text","placeholder":"spear"},
     {"name":"TypeID","type":"autocomplete","options":TypeIDs.map(type => type.name.toLowerCase()),"placeholder":"sword"},
     {"name":`Can be upgraded? (has "This item can be upgraded" text) `,"type":"checkbox"},
     {"type":"html","value":"<br><p>Base Stats (leave at 0 if you don't want it applied to the item)</p>"},

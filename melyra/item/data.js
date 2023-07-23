@@ -58,21 +58,6 @@ const attributeUuids = {
     FEET: { id: "[I;12,42069,0,15]", slot: "feet" }
 };
 
-const types = [
-    { name: "", isTool: false, attributeUuid: attributeUuids.MAINHAND }, // Normal item
-    { name: "Material", isTool: false, attributeUuid: attributeUuids.MAINHAND }, // Material
-    { name: "Pickaxe", isTool: true, attributeUuid: attributeUuids.MAINHAND },
-    { name: "Axe", isTool: true, attributeUuid: attributeUuids.MAINHAND },
-    { name: "Sword", isTool: false, attributeUuid: attributeUuids.MAINHAND },
-    { name: "Dagger", isTool: false, attributeUuid: attributeUuids.MAINHAND },
-    { name: "Spear", isTool: false, attributeUuid: attributeUuids.MAINHAND },
-    { name: "Bow", isTool: false, attributeUuid: attributeUuids.MAINHAND },
-    { name: "Helmet", isTool: false, attributeUuid: attributeUuids.HEAD },
-    { name: "Chestplate", isTool: false, attributeUuid: attributeUuids.CHEST },
-    { name: "Leggings", isTool: false, attributeUuid: attributeUuids.LEGS },
-    { name: "Boots", isTool: false, attributeUuid: attributeUuids.FEET }
-];
-
 const TypeIDs = [
     { name: "", isTool: false, attributeUuid: attributeUuids.MAINHAND }, // Normal item
     { name: "Helmet", isTool: false, attributeUuid: attributeUuids.HEAD },

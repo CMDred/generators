@@ -127,7 +127,6 @@ function getDecimal(hex){
 function output(){
     const rarity = rarities.get("name", get("Rarity"));
     const TypeID = /\d+/.test(get("TypeID")) ? TypeIDs[parseInt(get("TypeID"))] : TypeIDs.get("name", get("TypeID"));
-    const type = get("Type");
 
 
     let nbt = [];
@@ -157,6 +156,7 @@ function output(){
         let values = get(stat.id);
         if(values[0]){//the stat has a value
             hasStat = true;
+            addStatToLore(stat,values);
             if(values[1]){
                 addTag(RandomStats, new Tag(values[0], `Min_${stat.nbt}:${values[0]}`));
                 addTag(RandomStats, new Tag(values[1], `Max_${stat.nbt}:${values[1]}`));
@@ -219,7 +219,6 @@ function output(){
     addTag(Lore, new Tag(get(`Can be upgraded? (has "This item can be upgraded" text) `), [`'[`,`]'`], [new jsonSegment(`This item can be upgraded`,`dark_gray`).get]));
     addTag(nbt,new Tag(get("Name"),`Name:'${get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`)}'`));
     if(TypeID){
-        addTag(nbt,new Tag(get("Type"),`Type:'${type.toUpperCase()}'`));
         addTag(nbt,new Tag(TypeID,`TypeID:${TypeIDs.indexOf(TypeID)}`)); 
         addTag(nbt,new Tag(TypeID.isTool,`isTool:1b`));
 
@@ -253,9 +252,6 @@ function output(){
         addTag(nbt,new Tag(get("Rarity"),`Rarity:'${rarity.name.toUpperCase()}'`));
         addTag(nbt, new Tag(true, [`RarityColor:'`,`'`],[new jsonSegment(``,rarity.color).get]));
         addTag(nbt, new Tag(true, [`LevelColor:'`,`'`],[new jsonSegment(``,shade(colorCodes[rarity.color],2/3)).get]));
-        let raritynbt = new jsonSegment(`${rarity.name.toUpperCase()} ${type.toUpperCase()}`, rarity.color);
-        raritynbt.bold = true;
-        addTag(Lore, new Tag(true,[`'[`,`]'`],[raritynbt.get]));
     }
 
     addTag(nbt,new Tag(true, `HideFlags:127`));
