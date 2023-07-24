@@ -148,6 +148,9 @@ function output(){
     }else{
         addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(`[${rarity.name}]` , "white").get]));
     }
+    if(get(`Can be upgraded? (has "This item can be upgraded" text) `)){
+        addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(`Level +0` , "#EDEDED").get]));
+    }
     let description = [];
     if(descriptionText.length > 1 || descriptionText[0] != ""){
         for(segement of descriptionText){
