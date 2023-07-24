@@ -219,10 +219,7 @@ function output(){
         addTag(Lore, new Tag(true, [`'[`,`]'`],[new Tag(true, `""`), start.get,enchantements.get]));
         addTag(Lore, new Tag(true, [`'[`,`]'`],CustomEnchantments));
     }
-
-    addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
-
-    addTag(Lore, new Tag(get(`Can be upgraded? (has "This item can be upgraded" text) `), [`'[`,`]'`], [new jsonSegment(`This item can be upgraded`,`dark_gray`).get]));
+    
     if(TypeID){
         addTag(nbt,new Tag(TypeID,`TypeID:${TypeID}`)); 
 
