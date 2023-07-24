@@ -106,6 +106,10 @@ function getSign(number, isPercentage) {
     return number;
 }
 
+function getColor(value){
+    return value > 0 ? 'white' : "red";
+}
+
 const shade = (hexColor, magnitude) => {
     const decimalColor = parseInt(hexColor.replace('#', ''), 16);
     let r = parseInt(Math.min(Math.max((decimalColor >> 16 & 255) * magnitude, 0), 255));
@@ -191,12 +195,12 @@ function output(){
         let name = new jsonSegment(`${stat.name} `, `gray`);
         addTag(line, name.get);
         if(values[1] == 0){
-            let value = new jsonSegment(`${getSign(values[0],stat.isPercentage)}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`);
+            let value = new jsonSegment(`${getSign(values[0],stat.isPercentage)}${stat.isPercentage == true ? "%" : ""}`, getColor(values[0]));
             addTag(line, value.get);
         }else{
-            addTag(line,new jsonSegment(`${getSign(values[0],stat.isPercentage)}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`).get);
+            addTag(line,new jsonSegment(`${getSign(values[0],stat.isPercentage)}${stat.isPercentage == true ? "%" : ""}`, getColor(values[0])).get);
             addTag(line,new jsonSegment(` - `,`white`).get)
-            addTag(line,new jsonSegment(`${getSign(values[1],stat.isPercentage)}${stat.isPercentage == true ? "%" : ""}`, `${stat.numberColor}`).get);
+            addTag(line,new jsonSegment(`${getSign(values[1],stat.isPercentage)}${stat.isPercentage == true ? "%" : ""}`, getColor(values[1])).get);
         }
         addTag(Lore, new Tag(line.length,[`'[`,`]'`],line));
     }
@@ -219,7 +223,7 @@ function output(){
         addTag(Lore, new Tag(true, [`'[`,`]'`],[new Tag(true, `""`), start.get,enchantements.get]));
         addTag(Lore, new Tag(true, [`'[`,`]'`],CustomEnchantments));
     }
-    
+
     if(TypeID){
         addTag(nbt,new Tag(TypeID,`TypeID:${TypeID}`)); 
 

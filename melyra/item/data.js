@@ -26,27 +26,26 @@ const colorCodes = {
 }
 
 const statData = [
-    { id: "health", group: 1, symbol: "❤", numberOfSpaces: 1, symbolColor: "red", numberColor: "green", name: "Health", nbt: "MaxHealth", isPercentage: false },
-    { id: "defense", group: 1, symbol: "❂", numberOfSpaces: 1, symbolColor: "green", numberColor: "green", name: "Defense", nbt: "Defense", isPercentage: false },
-    { id: "magicDefense", group: 1, symbol: "۞", numberOfSpaces: 1, symbolColor: "blue", numberColor: "green", name: "Magic Defense", nbt: "MagicDefense", isPercentage: false },
-    { id: "healthRegeneration", group: 1, symbol: "❣", numberOfSpaces: 1, symbolColor: "red", numberColor: "green", name: "Health Regeneration", nbt: "HealthRegeneration", isPercentage: true },
-    { id: "manaRegeneration", group: 1, symbol: "๑", numberOfSpaces: 1, symbolColor: "aqua", numberColor: "green", name: "Mana Regeneration", nbt: "ManaRegeneration", isPercentage: true },
+    { id: "health", group: 1, symbol: "❤", numberOfSpaces: 1, symbolColor: "red", name: "Health", nbt: "MaxHealth", isPercentage: false },
+    { id: "defense", group: 1, symbol: "❂", numberOfSpaces: 1, symbolColor: "green", name: "Defense", nbt: "Defense", isPercentage: false },
+    { id: "magicDefense", group: 1, symbol: "۞", numberOfSpaces: 1, symbolColor: "blue", name: "Magic Defense", nbt: "MagicDefense", isPercentage: false },
+    { id: "healthRegeneration", group: 1, symbol: "❣", numberOfSpaces: 1, symbolColor: "red", name: "Health Regeneration", nbt: "HealthRegeneration", isPercentage: true },
+    { id: "manaRegeneration", group: 1, symbol: "๑", numberOfSpaces: 1, symbolColor: "aqua", name: "Mana Regeneration", nbt: "ManaRegeneration", isPercentage: true },
 
-    { id: "damage", group: 2, symbol: "🗡", numberOfSpaces: 1, symbolColor: "red", numberColor: "red", name: "Damage", nbt: "Damage", isPercentage: false },
-    { id: "strength", group: 2, symbol: "❁", numberOfSpaces: 1, symbolColor: "red", numberColor: "red", name: "Strength", nbt: "Strength", isPercentage: false },
-    { id: "critical", group: 2, symbol: "☣", numberOfSpaces: 1, symbolColor: "red", numberColor: "red", name: "Critical", nbt: "Critical", isPercentage: true },
-    { id: "drawSpeed", group: 2, symbol: "➹", numberOfSpaces: 1, symbolColor: "green", numberColor: "red", name: "Draw Speed", nbt: "DrawSpeed", isPercentage: true },
-    { id: "overdraw", group: 2, symbol: "🏹", numberOfSpaces: 1, symbolColor: "blue", numberColor: "red", name: "Overdraw", nbt: "Overdraw", isPercentage: true },
-    { id: "attackSpeed", group: 2, symbol: "✲", numberOfSpaces: 1, symbolColor: "yellow", numberColor: "red", name: "Attack Speed", nbt: "AttackSpeed", isPercentage: true },
-    // { id: "lifeSteal", group: 2, symbol: "♡", numberOfSpaces: 1, symbolColor: "white", numberColor: "red", name: "Life Steal", nbt: "LifeSteal", isPercentage: true },
-    { id: "mana", group: 2, symbol: "₪", numberOfSpaces: 1, symbolColor: "aqua", numberColor: "red", name: "Mana", nbt: "Mana", isPercentage: false },
-    { id: "magicDamage", group: 2, symbol: "✯", numberOfSpaces: 1, symbolColor: "aqua", numberColor: "red", name: "Magic Damage", nbt: "MagicDamage", isPercentage: false },
+    { id: "damage", group: 2, symbol: "🗡", numberOfSpaces: 1, symbolColor: "red", name: "Damage", nbt: "Damage", isPercentage: false },
+    { id: "strength", group: 2, symbol: "❁", numberOfSpaces: 1, symbolColor: "red", name: "Strength", nbt: "Strength", isPercentage: false },
+    { id: "critical", group: 2, symbol: "☣", numberOfSpaces: 1, symbolColor: "red", name: "Critical", nbt: "Critical", isPercentage: true },
+    { id: "drawSpeed", group: 2, symbol: "➹", numberOfSpaces: 1, symbolColor: "green", name: "Draw Speed", nbt: "DrawSpeed", isPercentage: true },
+    { id: "overdraw", group: 2, symbol: "🏹", numberOfSpaces: 1, symbolColor: "blue", name: "Overdraw", nbt: "Overdraw", isPercentage: true },
+    { id: "attackSpeed", group: 2, symbol: "✲", numberOfSpaces: 1, symbolColor: "yellow", name: "Attack Speed", nbt: "AttackSpeed", isPercentage: true },
+    { id: "mana", group: 2, symbol: "₪", numberOfSpaces: 1, symbolColor: "aqua", name: "Mana", nbt: "Mana", isPercentage: false },
+    { id: "magicDamage", group: 2, symbol: "✯", numberOfSpaces: 1, symbolColor: "aqua", name: "Magic Damage", nbt: "MagicDamage", isPercentage: false },
 
-    { id: "speed", group: 3, symbol: "✦", numberOfSpaces: 1, symbolColor: "white", numberColor: "white", name: "Speed", nbt: "Speed", isPercentage: true },
-    { id: "arcane", group: 3, symbol: "¤", numberOfSpaces: 1, symbolColor: "light_purple", numberColor: "white", name: "Arcane", nbt: "Arcane", isPercentage: false },
-    { id: "miningSpeed", group: 3, symbol: "⛏", numberOfSpaces: 1, symbolColor: "gold", numberColor: "white", name: "Mining Speed", nbt: "MiningSpeed", isPercentage: false },
-    { id: "woodcuttingSpeed", group: 3, symbol: "🪓", numberOfSpaces: 1, symbolColor: "gold", numberColor: "white", name: "Woodcutting Speed", nbt: "WoodcuttingSpeed", isPercentage: false },
-    { id: "fishingSpeed", group: 3, symbol: "🎣", numberOfSpaces: 1, symbolColor: "gold", numberColor: "white", name: "Fishing Speed", nbt: "FishingSpeed", isPercentage: false },
+    { id: "speed", group: 3, symbol: "✦", numberOfSpaces: 1, symbolColor: "white", name: "Speed", nbt: "Speed", isPercentage: true },
+    { id: "arcane", group: 3, symbol: "¤", numberOfSpaces: 1, symbolColor: "light_purple", name: "Arcane", nbt: "Arcane", isPercentage: false },
+    { id: "miningSpeed", group: 3, symbol: "⛏", numberOfSpaces: 1, symbolColor: "gold", name: "Mining Speed", nbt: "MiningSpeed", isPercentage: false },
+    { id: "woodcuttingSpeed", group: 3, symbol: "🪓", numberOfSpaces: 1, symbolColor: "gold", name: "Woodcutting Speed", nbt: "WoodcuttingSpeed", isPercentage: false },
+    { id: "fishingSpeed", group: 3, symbol: "🎣", numberOfSpaces: 1, symbolColor: "gold", name: "Fishing Speed", nbt: "FishingSpeed", isPercentage: false },
 ]
 
 const attributeUuids = {
