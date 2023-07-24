@@ -209,9 +209,7 @@ function output(){
     }
 
     if(TypeID && rarity){
-        if(hasStat){
-            addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
-        }
+        addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
         let CustomEnchantments = [];
         let start = new jsonSegment(`||`, rarity.color);
         start.obfuscated = true;
