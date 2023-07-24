@@ -144,7 +144,7 @@ function output(){
     addTag(display, new Tag(get("Name"),[`Name:'[`,`]'`],[Name.get]));
     let descriptionText = get("Description").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`).split('\\\\\\\\n');
     if(TypeID){
-        addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(`[${Type} | ${rarity.name}]` , "white").get]));
+        addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(`[${Type} | ${rarity.name}]` , "#EDEDED").get]));
     }else{
         addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(`[${rarity.name}]` , "white").get]));
     }
