@@ -227,17 +227,14 @@ function output(){
 
     if(TypeID){
         addTag(nbt,new Tag(TypeID,`TypeID:${TypeID}`)); 
-
-        if(document.getElementsByClassName("hidestat2").length == statData.length){
-            let CustomEnchantments = [];
-            for (let i = 0; i < rarities.indexOf(rarity)+1; i++) {
-                CustomEnchantments.push(new Tag(true, `Slot${i}:-2`))
-            }
-            if(hasStatRange()){
-                addTag(nbt, new Tag(true, [`RandomEnchantments:{`,`}`],CustomEnchantments));
-            }else{
-                addTag(nbt, new Tag(true, [`CustomEnchantments:{`,`}`],CustomEnchantments));
-            }
+        let CustomEnchantments = [];
+        for (let i = 0; i < rarities.indexOf(rarity)+1; i++) {
+            CustomEnchantments.push(new Tag(true, `Slot${i}:-2`))
+        }
+        if(hasStatRange()){
+            addTag(nbt, new Tag(true, [`RandomEnchantments:{`,`}`],CustomEnchantments));
+        }else{
+            addTag(nbt, new Tag(true, [`CustomEnchantments:{`,`}`],CustomEnchantments));
         }
         let SkullOwner = get("SkullOwner (Enter Value or Username):");
         if(get("Item ID") == "player_head" && SkullOwner){
