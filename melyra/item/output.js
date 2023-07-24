@@ -156,8 +156,8 @@ function output(){
         for(segement of descriptionText){
             addTag(description, new Tag(true, [`'`,`'`], [Object.assign(new jsonSegment(segement,"dark_gray"),{italic: true}).get]));
         }
+        addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
         addTag(Lore, new Tag(true, getNBT(description)));
-        //addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
     }
 
     let lastgroup = 0;
