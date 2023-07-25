@@ -270,7 +270,7 @@ function output(){
         addTag(nbt, new Tag(true, [`AttributeModifiers:[`,`]`],AttributeModifiers));
     }
     if(rarity){
-        addTag(nbt,new Tag(true,`Rarity:'${rarity.name.toUpperCase()}'`));
+        addTag(nbt,new Tag(true,`Rarity:'${rarity.name}'`));
         addTag(nbt, new Tag(true, [`RarityColor:'`,`'`],[new jsonSegment(``,rarity.color).get]));
     }
 
