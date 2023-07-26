@@ -7,6 +7,7 @@ let settings = [
     {"name":"Rarity","type":"select","options":rarities.map(rarity => rarity.name.toLowerCase())},
     {"name":"Type","type":"select","options":Types.map(type => type.toLowerCase()),"placeholder":"Melee"},
     {"name":`Can be upgraded? (has "This item can be upgraded" text) `,"type":"checkbox"},
+    ...upgradecost(),
     {"type":"html","value":"<br><p>Base Stats (leave at 0 if you don't want it applied to the item)</p>"},
     ...statSettings(),
     {"type":"html","value":"<br><p>Additional Values (leave at default to ignore)</p>"},
@@ -23,6 +24,18 @@ function statSettings() {
     }
     return settings;
 }
+
+function upgradecost() {
+    let settings = [];
+    settings.push({"type":"html","value":"<br><p>test</p>"});
+    for (let i = 0; i < 9; i++) {
+        settings.push({"name":`upgradecost: ${i}`, "type":"upgradecost"})
+    }
+    for(let setting of settings){
+        setting.hidden = "Upgradeable"
+    }
+    return settings;
+} 
 
 function hasStatRange(){
     return document.getElementsByClassName("hidestat2").length != statData.length
@@ -98,7 +111,14 @@ function generateSetting(option){
             input2.onchange = (() => output());
             input2.classList.add("hidestat2");
             container.append(input1,input2,toggle)
+
             setting.append(container);
+            break;
+        case "upgradecost":{
+                let container = document.createElement("div");
+                newLine(container);
+                setting.append(container);
+            }
             break;
         case "color":
                 input = document.createElement("input");
@@ -129,8 +149,45 @@ function toggleStat(e) {
             }
         }
     }
-    //RandomCustomModelData
-    //RandomName
+}
+
+function newLine(container){
+    let line = document.createElement("div");
+    let Material = document.createElement("input");
+    Material.type = "text";
+    Material.onchange = (() => output());
+    let Count = document.createElement("input");
+    Count.type = "number";
+    let addMaterial = document.createElement("button");
+    addMaterial.innerText = '+';
+    addMaterial.onclick = ((e) => addcost(e));
+    Count.onchange = ((e) => output());
+    line.append(Material,Count,addMaterial)
+    container.append(line);
+}
+
+function addcost(e) {
+    let container = e.target.parentElement.parentElement;
+    newLine(container);
+    for(child of container.children){
+        if(child.children[3]){
+            child.children[3].remove()
+        }
+        let removeMaterial = document.createElement("button");
+        removeMaterial.innerText = '-';
+        removeMaterial.onclick = ((e) => removecost(e));
+        child.append(removeMaterial);
+    }
+}
+
+function removecost(e){
+    let container = e.target.parentElement.parentElement;
+    e.target.parentElement.remove();
+    if(container.children.length == 1){
+        if(container.children[0].children[3]){
+            container.children[0].children[3].remove()
+        }
+    }
 }
 
 

@@ -27,6 +27,13 @@ function getvalue(settings,name){
                 }
                 break;
             case "DIV":
+                if(settings[index].type == "upgradecost"){
+                    values = [];
+                    for(child of option.children){
+                        values.push([child.children[0].value, child.children[1].value])
+                    }
+                    return values;
+                }
                 return [option.children[0].value,option.children[1].value];
             case "LABEL"://checkbox/slider
                 return option.children[0].checked
@@ -157,6 +164,23 @@ function output(){
     }
     if(get(`Can be upgraded? (has "This item can be upgraded" text) `)){
         addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(`Level +0` , "#EDEDED").get]));
+        addTag(nbt, new Tag(`Upgradable:1b`));
+        let UpgradeCost = []
+        for (let i = 0; i < 9; i++) {
+            let values = get(`upgradecost: ${i}`);
+            let row = [];
+            for(set of values){
+                if(set[0] != "" && set[1] != ""){
+                    addTag(row, new Tag(`{Count: ${set[1]}, MaterialID: ${set[0]}}`));
+                }
+            }
+            if(row.length == 0){
+                addTag(UpgradeCost, new Tag(`[]`));
+            }else{
+                addTag(UpgradeCost, new Tag([`[`,`]`], row));
+            }
+        }
+        addTag(nbt, new Tag([`UpgradeCost:[`,`]`], UpgradeCost));
     }
     let description = [];
     if(descriptionText.length > 1 || descriptionText[0] != ""){
@@ -291,9 +315,6 @@ function output(){
 
     addTag(nbt,new Tag(`HideFlags:127`));
     addTag(nbt,new Tag(`Unbreakable:1b`));
-    if(get(`Can be upgraded? (has "This item can be upgraded" text) `)){
-        addTag(nbt, new Tag(`Upgradable:1b`));
-    }
     addTag(nbt, new Tag(`Level:0`));
     if(get(`CustomModelData`)){
         addTag(nbt, new Tag(`CustomModelData:${get(`CustomModelData`)}`));
@@ -318,4 +339,18 @@ function output(){
 
     textarea.innerText= `/give @p ${get("Item ID")}{${getNBT(nbt)}}`;
     preview(Name,Lore);
+    checkhidden()
+}
+
+function checkhidden(){
+    for(let setting in settings){
+        if(settings[setting].hidden == "Upgradeable"){
+            let element = options.children[setting];
+            if(get(`Can be upgraded? (has "This item can be upgraded" text) `)){
+                element.classList.remove('hide')
+            }else{
+                element.classList.add('hide')
+            }
+        }
+    }
 }
