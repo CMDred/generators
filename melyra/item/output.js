@@ -41,8 +41,7 @@ function getvalue(settings,name){
 }
 
 class Tag {
-    constructor(condition, value1, content = []) {
-        this.condition = condition;
+    constructor(value1, content = []) {
         this.value1 = value1;
         this.content = content;
     }
@@ -59,39 +58,43 @@ class jsonSegment {
     
     get get() {
         let segment = [];
-        addTag(segment, new Tag(this.value != undefined,`"text":"${this.value}"`));
-        addTag(segment, new Tag(this.color != undefined,`"color":"${this.color}"`));
-        addTag(segment, new Tag(this.italic != undefined,`"italic":"${this.italic}"`));
-        addTag(segment, new Tag(this.obfuscated != undefined,`"obfuscated":"${this.obfuscated}"`));
-        addTag(segment, new Tag(this.bold != undefined,`"bold":"${this.bold}"`));
-        return new Tag(true,[`{`,`}`],segment);
+        if(this.value != undefined){
+            addTag(segment, new Tag(`"text":"${this.value}"`));
+        }
+        if(this.color != undefined){
+            addTag(segment, new Tag(`"color":"${this.color}"`));
+        }
+        if(this.italic != undefined){
+            addTag(segment, new Tag(`"italic":"${this.italic}"`));
+        }
+        if(this.obfuscated != undefined){
+            addTag(segment, new Tag(`"obfuscated":"${this.obfuscated}"`));
+        }
+        if(this.bold != undefined){
+            addTag(segment, new Tag(`"bold":"${this.bold}"`));
+        }
+        return new Tag([`{`,`}`],segment);
     }
 }
 
 function getNBT(nbt) {
     out = ""
     for(const tag of nbt){
-        if(tag.condition){
-            if(tag.content.length){ 
-                out += tag.value1[0] + getNBT(tag.content) + tag.value1[1] + ",";
-            }else{
-                out += tag.value1 + ",";
-            }
+        if(tag.content.length){ 
+            out += tag.value1[0] + getNBT(tag.content) + tag.value1[1] + ",";
+        }else{
+            out += tag.value1 + ",";
         }
     }
     return out.slice(0, -1);
 }
 
 function addTag(list, tag){
-    if(tag.condition){
-        list.push(tag)
-    }
+    list.push(tag)
 }
 
 function addjsonSegment(list, tag){
-    if(tag.condition){
-        list.push(tag)
-    }
+    list.push(tag)
 }
 
 Array.prototype.get = function(key, value){
@@ -138,26 +141,30 @@ function output(){
     let display = [];
     var Lore = [];
 
-    addTag(display,new Tag(get("display.color (leather armor only):") != "#a06540", `color:${getDecimal(get("display.color (leather armor only):"))}`));
+    if(get("display.color (leather armor only):") != "#a06540"){
+        addTag(display,new Tag(`color:${getDecimal(get("display.color (leather armor only):"))}`));
+    }
 
     let Name = new jsonSegment(get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`), rarity.color);
-    addTag(display, new Tag(get("Name"),[`Name:'[`,`]'`],[Name.get]));
+    if(get("Name")){
+        addTag(display, new Tag([`Name:'[`,`]'`],[Name.get]));
+    }
     let descriptionText = get("Description").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`).split('\\\\\\\\n');
     if(TypeID){
-        addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(`[${Type} | ${rarity.name}]` , "#EDEDED").get]));
+        addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(`[${Type} | ${rarity.name}]` , "#EDEDED").get]));
     }else{
-        addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(`[${rarity.name}]` , "white").get]));
+        addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(`[${rarity.name}]` , "white").get]));
     }
     if(get(`Can be upgraded? (has "This item can be upgraded" text) `)){
-        addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(`Level +0` , "#EDEDED").get]));
+        addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(`Level +0` , "#EDEDED").get]));
     }
     let description = [];
     if(descriptionText.length > 1 || descriptionText[0] != ""){
         for(segement of descriptionText){
-            addTag(description, new Tag(true, [`'`,`'`], [Object.assign(new jsonSegment(segement,"dark_gray"),{italic: true}).get]));
+            addTag(description, new Tag([`'`,`'`], [Object.assign(new jsonSegment(segement,"dark_gray"),{italic: true}).get]));
         }
-        addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
-        addTag(Lore, new Tag(true, getNBT(description)));
+        addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
+        addTag(Lore, new Tag(getNBT(description)));
     }
 
     let lastgroup = 0;
@@ -171,25 +178,31 @@ function output(){
             hasStat = true;
             addStatToLore(stat,values);
             if(values[1]){
-                addTag(RandomStats, new Tag(values[0], `Min_${stat.nbt}:${values[0]}`));
-                addTag(RandomStats, new Tag(values[1], `Max_${stat.nbt}:${values[1]}`));
+                addTag(RandomStats, new Tag(`Min_${stat.nbt}:${values[0]}`));
+                addTag(RandomStats, new Tag(`Max_${stat.nbt}:${values[1]}`));
             }else{
-                addTag(Stats, new Tag(values[0], `${stat.nbt}:${values[0]}`));
+                addTag(Stats, new Tag(`${stat.nbt}:${values[0]}`));
             }
         }
     }
 
     if(hasStatRange()){
-        addTag(nbt, new Tag(RandomStats.length,['RandomStats:{','}'],RandomStats));
-        addTag(nbt, new Tag(Stats.length,['BaseStats:{','}'],Stats));
+        if(RandomStats.length){
+            addTag(nbt, new Tag(['RandomStats:{','}'],RandomStats));
+        }
+        if(Stats.length){
+            addTag(nbt, new Tag(['BaseStats:{','}'],Stats));
+        }
     }else{
-        addTag(nbt, new Tag(Stats.length,['Stats:{','}'],Stats));
-        addTag(nbt, new Tag(Stats.length,['BaseStats:{','}'],Stats));
+        if(Stats.length){
+            addTag(nbt, new Tag(['Stats:{','}'],Stats));
+            addTag(nbt, new Tag(['BaseStats:{','}'],Stats));
+        }
     }
 
     function addStatToLore(stat, values) {
         if(stat.group != lastgroup){
-            addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
+            addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
             lastgroup = stat.group;
         }
         let line = [];
@@ -205,15 +218,17 @@ function output(){
             addTag(line,new jsonSegment(` - `,`white`).get)
             addTag(line,new jsonSegment(`${getSign(values[1],stat.isPercentage)}${stat.isPercentage == true ? "%" : ""}`, getColor(values[1])).get);
         }
-        addTag(Lore, new Tag(line.length,[`'[`,`]'`],line));
+        if(line.length){
+            addTag(Lore, new Tag([`'[`,`]'`],line));
+        }
     }
 
     if(TypeID && rarity){
-        addTag(Lore, new Tag(true, [`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
+        addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
         let CustomEnchantments = [];
         let start = new jsonSegment(`||`, rarity.color);
         start.obfuscated = true;
-        addTag(CustomEnchantments, new Tag(true, `""`));
+        addTag(CustomEnchantments, new Tag(`""`));
         addTag(CustomEnchantments, start.get);
         for (let i = 0; i < rarities.indexOf(rarity)+1; i++) {
             addTag(CustomEnchantments, new jsonSegment(` [`, shade(colorCodes.white,2/3)).get);
@@ -221,27 +236,27 @@ function output(){
             addTag(CustomEnchantments, new jsonSegment(`] `, shade(colorCodes.white,2/3)).get);
         }
         let enchantements = new jsonSegment(` Enchantments`, rarity.color);
-        addTag(Lore, new Tag(true, [`'[`,`]'`],[new Tag(true, `""`), start.get,enchantements.get]));
-        addTag(Lore, new Tag(true, [`'[`,`]'`],CustomEnchantments));
+        addTag(Lore, new Tag([`'[`,`]'`],[new Tag(`""`), start.get,enchantements.get]));
+        addTag(Lore, new Tag([`'[`,`]'`],CustomEnchantments));
     }
 
     if(TypeID){
-        addTag(nbt,new Tag(TypeID,`TypeID:${TypeID}`)); 
+        addTag(nbt,new Tag(`TypeID:${TypeID}`)); 
         let CustomEnchantments = [];
         for (let i = 0; i < rarities.indexOf(rarity)+1; i++) {
-            CustomEnchantments.push(new Tag(true, `Slot${i}:-2`))
+            CustomEnchantments.push(new Tag(`Slot${i}:-2`))
         }
         if(hasStatRange()){
-            addTag(nbt, new Tag(true, [`RandomEnchantments:{`,`}`],CustomEnchantments));
+            addTag(nbt, new Tag([`RandomEnchantments:{`,`}`],CustomEnchantments));
         }else{
-            addTag(nbt, new Tag(true, [`CustomEnchantments:{`,`}`],CustomEnchantments));
+            addTag(nbt, new Tag([`CustomEnchantments:{`,`}`],CustomEnchantments));
         }
         let SkullOwner = get("SkullOwner (Enter Value or Username):");
         if(get("Item ID") == "player_head" && SkullOwner){
             if(SkullOwner.length < 17){
-                addTag(nbt, new Tag(true, `SkullOwner:"${SkullOwner}"`));
+                addTag(nbt, new Tag(`SkullOwner:"${SkullOwner}"`));
             }else {
-                addTag(nbt, new Tag(true, `,SkullOwner:{Id:[I;0,0,7,0],Properties:{textures:[{Value:"${skullOwner}"}]}}`));
+                addTag(nbt, new Tag(`,SkullOwner:{Id:[I;0,0,7,0],Properties:{textures:[{Value:"${skullOwner}"}]}}`));
             }
         }
         const AttributeModifiers = [];
@@ -263,32 +278,43 @@ function output(){
                 attributeUuid = attributeUuids.MAINHAND;
                 break;
         }
-        addTag(AttributeModifiers, new Tag(true, `{AttributeName:"minecraft:generic.luck",Amount:-0.000999999999,Operation:0,UUID:${attributeUuid.id},Slot:"${attributeUuid.slot}"}`));
+        addTag(AttributeModifiers, new Tag(`{AttributeName:"minecraft:generic.luck",Amount:-0.000999999999,Operation:0,UUID:${attributeUuid.id},Slot:"${attributeUuid.slot}"}`));
         if(["bow", "minecraft:bow"].includes(get("Item ID").toLocaleLowerCase())){
-            addTag(AttributeModifiers, new Tag(true, `{AttributeName:"generic.attack_speed",Amount:-999,Operation:0,UUID:${attributeUuid.id},Slot:"${attributeUuid.slot}"}`));
+            addTag(AttributeModifiers, new Tag(`{AttributeName:"generic.attack_speed",Amount:-999,Operation:0,UUID:${attributeUuid.id},Slot:"${attributeUuid.slot}"}`));
         }
-        addTag(nbt, new Tag(true, [`AttributeModifiers:[`,`]`],AttributeModifiers));
+        addTag(nbt, new Tag([`AttributeModifiers:[`,`]`],AttributeModifiers));
     }
     if(rarity){
-        addTag(nbt,new Tag(true,`Rarity:'${rarity.name}'`));
-        addTag(nbt, new Tag(true, [`RarityColor:'`,`'`],[new jsonSegment(``,rarity.color).get]));
+        addTag(nbt,new Tag(`Rarity:'${rarity.name}'`));
+        addTag(nbt, new Tag([`RarityColor:'`,`'`],[new jsonSegment(``,rarity.color).get]));
     }
 
-    addTag(nbt,new Tag(true, `HideFlags:127`));
-    addTag(nbt,new Tag(true, `Unbreakable:1b`));
+    addTag(nbt,new Tag(`HideFlags:127`));
+    addTag(nbt,new Tag(`Unbreakable:1b`));
     if(get(`Can be upgraded? (has "This item can be upgraded" text) `)){
-        addTag(nbt, new Tag(true, `Upgradable:1b`));
+        addTag(nbt, new Tag(`Upgradable:1b`));
     }
-    addTag(nbt, new Tag(true, `Level:0`));
-    addTag(nbt, new Tag(get(`CustomModelData`), `CustomModelData:${get(`CustomModelData`)}`));
-    addTag(nbt, new Tag(get(`RandomCustomModelData`), `RandomCustomModelData:${get(`RandomCustomModelData`)}`));
+    addTag(nbt, new Tag(`Level:0`));
+    if(get(`CustomModelData`)){
+        addTag(nbt, new Tag(`CustomModelData:${get(`CustomModelData`)}`));
+    }
+    if(get(`RandomCustomModelData`)){
+        addTag(nbt, new Tag(`RandomCustomModelData:${get(`RandomCustomModelData`)}`));
+    }
 
     let RandomName = new jsonSegment(get("RandomName").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`), rarity.color);
-    addTag(nbt, new Tag(get("RandomName"),[`RandomName:'[`,`]'`],[RandomName.get]));
-
-    addTag(display, new Tag(Lore.length,[`Lore:[`,`]`], Lore));
-    addTag(nbt, new Tag(display.length,['display:{','}'],display));
-    addTag(nbt, new Tag(get("Description"),[`Description:[`,`]`],description));
+    if(get("RandomName")){
+        addTag(nbt, new Tag([`RandomName:'[`,`]'`],[RandomName.get]));
+    }
+    if(Lore.length){
+        addTag(display, new Tag([`Lore:[`,`]`], Lore));
+    }
+    if(display.length){
+        addTag(nbt, new Tag(['display:{','}'],display));
+    }
+    if(get("Description")){
+        addTag(nbt, new Tag([`Description:[`,`]`],description));
+    }
 
     textarea.innerText= `/give @p ${get("Item ID")}{${getNBT(nbt)}}`;
     preview(Name,Lore);
