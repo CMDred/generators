@@ -101,6 +101,18 @@ function output(){
     addTag(nbt,new Tag(true, `CustomNameVisible:1b`));
     addTag(nbt,new Tag(true, `ArmorDropChances:[0.000F,0.000F,0.000F,0.000F]`));
     addTag(nbt,new Tag(true, `HandDropChances:[0.000F,0.000F]`));
+
+    let CustomName = [];
+    addTag(CustomName, new Tag(true, `""`));
+    addTag(CustomName, new jsonSegment(`${parseInt(get("HP")).toLocaleString('en-US')}`,`green`).get);
+    addTag(CustomName, new jsonSegment(`/`,`white`).get);
+    addTag(CustomName, new jsonSegment(`${parseInt(get("HP")).toLocaleString('en-US')}`,`green`).get);
+    addTag(CustomName, new jsonSegment(`❤ `,`dark_red`).get);
+    addTag(CustomName, new jsonSegment(`${get("Name")} `,`${get("Name Color")}`).get);
+    addTag(CustomName, new jsonSegment(`[`,`dark_gray`).get);
+    addTag(CustomName, new jsonSegment(`Lv${get("Mob Level")}`,`gray`).get);
+    addTag(CustomName, new jsonSegment(`]`,`dark_gray`).get);
+
     let ArmorItems = [];
     addTag(ArmorItems, new Tag(true, `{}`));
     addTag(ArmorItems, new Tag(true, `{}`));
@@ -114,20 +126,20 @@ function output(){
 
         addTag(tag, new Tag(get("Name"), `MobNameRaw:"${get("Name")}"`));
         addTag(tag, new Tag(true, `CustomModelData:1b`));
+        addTag(tag, new Tag(true, `HealthBarName:'[${getNBT(CustomName.slice(2))}]'`));
+
 
         addTag(ArmorItems, new Tag(true, [`{id:"minecraft:scute",Count:1b,tag:{`,`}}`], tag));
     }
     addTag(nbt, new Tag(ArmorItems.length, ['ArmorItems:[',']'], ArmorItems));
-    let CustomName = [];
-    addTag(CustomName, new Tag(true, `""`));
-    addTag(CustomName, new jsonSegment(`${get("HP")}`,`green`).get);
-    addTag(CustomName, new jsonSegment(`/`,`white`).get);
-    addTag(CustomName, new jsonSegment(`${get("HP")}`,`green`).get);
-    addTag(CustomName, new jsonSegment(`❤ `,`dark_red`).get);
-    addTag(CustomName, new jsonSegment(`${get("Name")} `,`${get("Name Color")}`).get);
-    addTag(CustomName, new jsonSegment(`[`,`dark_gray`).get);
-    addTag(CustomName, new jsonSegment(`Lv${get("Mob Level")}`,`gray`).get);
-    addTag(CustomName, new jsonSegment(`]`,`dark_gray`).get);
-    addTag(nbt, new Tag(get("HP") && get("Mob Level") && get("Name") || true, [`CustomName:'[`,`]'`], CustomName));
+    
+    if(["skeleton", "husk", "wither_skeleton"].includes(get("Mob Type").toLowerCase())){
+        let Passengers = [];
+        addTag(Passengers, new Tag(true, [`{id:"minecraft:item_display",CustomNameVisible:1b,CustomName:'[`,`]'}`], CustomName));
+        addTag(nbt, new Tag(Passengers.length, ['Passengers:[',']'], Passengers));
+    }else{
+        addTag(nbt, new Tag(true, [`CustomName:'[`,`]'`], CustomName));
+    }
+
     textarea.innerText= `/summon ${get("Mob Type")} ~ ~ ~ {${getNBT(nbt)}}`;
 }
