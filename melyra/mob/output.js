@@ -91,10 +91,10 @@ function output(){
     addTag(Tags, new Tag(get("Tags"), get("Tags").split(" ").filter(Boolean).map(item => `"${item}"`).join(",")));
     addTag(nbt, new Tag(Tags.length, ['Tags:[',']'], Tags));
 
-    let ActiveEffects = [];
-    addTag(ActiveEffects, new Tag(true, `{Ambient: 0b, ShowIcon: 0b, ShowParticles: 0b, Duration: -1, Id: 11, Amplifier: 4b}`));
-    addTag(ActiveEffects, new Tag(get("Custom Agressive Mob") && get("Damage"), `{Id:3,Amplifier:0b,Duration:${String(parseInt(get("Damage"))+1)},ShowParticles:0b}`));
-    addTag(nbt, new Tag(ActiveEffects.length, ['ActiveEffects:[',']'], ActiveEffects));
+    let active_effects = [];
+    addTag(active_effects, new Tag(true, `{ambient: 0b, show_particles: 0b, duration: -1, id: "minecraft:resistance", amplifier: 4b}`));
+    addTag(active_effects, new Tag(get("Custom Agressive Mob") && get("Damage"), `{id: "minecraft:haste", amplifier:0b, duration:${String(parseInt(get("Damage"))+1)},show_particles:0b}`));
+    addTag(nbt, new Tag(active_effects.length, ['active_effects:[',']'], active_effects));
 
     addTag(nbt,new Tag(get("Mob Level"), `PortalCooldown:${String(parseInt(get("Mob Level")) + 1)}`));
 
