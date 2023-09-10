@@ -27,7 +27,7 @@ function statSettings() {
 
 function upgradecost() {
     let settings = [];
-    settings.push({"type":"html","value":"<br><p>test</p>"});
+    settings.push({"type":"html","value":"<br><p>Upgrade Cost</p>"});
     for (let i = 0; i < 9; i++) {
         settings.push({"name":`upgradecost: ${i}`, "type":"upgradecost"})
     }
@@ -154,10 +154,12 @@ function toggleStat(e) {
 function newLine(container){
     let line = document.createElement("div");
     let Material = document.createElement("input");
+    Material.placeholder = "MaterialID";
     Material.type = "text";
     Material.onchange = (() => output());
     let Count = document.createElement("input");
-    Count.type = "number";
+    Material.placeholder = "MaterialID";
+    Count.type = "Amount";
     let addMaterial = document.createElement("button");
     addMaterial.innerText = '+';
     addMaterial.onclick = ((e) => addcost(e));

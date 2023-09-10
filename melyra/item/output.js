@@ -164,7 +164,6 @@ function output(){
     }
     if(get(`Can be upgraded? (has "This item can be upgraded" text) `)){
         addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(`Level +0` , "#EDEDED").get]));
-        addTag(nbt, new Tag(`Upgradable:1b`));
         let UpgradeCost = []
         for (let i = 0; i < 9; i++) {
             let values = get(`upgradecost: ${i}`);
