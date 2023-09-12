@@ -131,12 +131,10 @@ function output(){
         addTag(ArmorItems, new Tag(true, [`{id:"minecraft:scute",Count:1b,tag:{`,`}}`], tag));
     }
     addTag(nbt, new Tag(ArmorItems.length, ['ArmorItems:[',']'], ArmorItems));
-    
+    let Passengers = [];
+    addTag(Passengers, new Tag(get("Custom Agressive Mob"), `{id:"minecraft:zombified_piglin",IsBaby:1b,Silent:1b,DeathLootTable:"",Tags:["MobStackPassenger","Registered"],active_effects:[{id:"minecraft:resistance",amplifier:4b,duration:-1,show_particles:0b},{id:"minecraft:invisibility",amplifier:0b,duration:-1,show_particles:0b}]}`));
     if(["skeleton", "husk", "wither_skeleton"].includes(get("Mob Type").toLowerCase())){
-        let Passengers = [];
         addTag(Passengers, new Tag(true, [`{id:"minecraft:item_display",CustomNameVisible:1b,CustomName:'[`,`]'}`], CustomName));
-        addTag(Passengers, new Tag(true, `{id:"minecraft:zombified_piglin",IsBaby:1b,Silent:1b,DeathLootTable:"",Tags:["MobStackPassenger","Registered"],active_effects:[{id:"minecraft:resistance",amplifier:4b,duration:-1,show_particles:0b},{id:"minecraft:invisibility",amplifier:0b,duration:-1,show_particles:0b}]}`));
-        addTag(nbt, new Tag(Passengers.length, ['Passengers:[',']'], Passengers));
 
         let FakeCustomName = [];
         addTag(FakeCustomName, new Tag(true, `""`));
@@ -152,6 +150,7 @@ function output(){
     }else{
         addTag(nbt, new Tag(true, [`CustomName:'[`,`]'`], CustomName));
     }
+    addTag(nbt, new Tag(Passengers.length, ['Passengers:[',']'], Passengers));
 
     textarea.innerText= `/summon ${get("Mob Type")} ~ ~ ~ {${getNBT(nbt)}}`;
 }
