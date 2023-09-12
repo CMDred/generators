@@ -88,6 +88,7 @@ function output(){
 
     let Tags = [];
     addTag(Tags, new Tag(get("Custom Agressive Mob"), `"CustomAgressiveMob"`));
+    addTag(Tags, new Tag(get("Custom Agressive Mob"), `"MobStackVehicle"`));
     addTag(Tags, new Tag(get("Tags"), get("Tags").split(" ").filter(Boolean).map(item => `"${item}"`).join(",")));
     addTag(nbt, new Tag(Tags.length, ['Tags:[',']'], Tags));
 
@@ -123,8 +124,6 @@ function output(){
         addTag(json, new Tag(get("Name"), `"text":"${get("Name")}"`));
         addTag(json, new Tag(get("Name Color"), `"color":"${get("Name Color")}"`));
         addTag(tag, new Tag(get("Name"), [`MobName:'{`,`}'`], json));
-
-        addTag(tag, new Tag(get("Name"), `MobNameRaw:"${get("Name")}"`));
         addTag(tag, new Tag(true, `CustomModelData:1b`));
         addTag(tag, new Tag(true, `HealthBarName:'[${getNBT(CustomName.slice(2))}]'`));
 
@@ -137,6 +136,18 @@ function output(){
         let Passengers = [];
         addTag(Passengers, new Tag(true, [`{id:"minecraft:item_display",CustomNameVisible:1b,CustomName:'[`,`]'}`], CustomName));
         addTag(nbt, new Tag(Passengers.length, ['Passengers:[',']'], Passengers));
+
+        let FakeCustomName = [];
+        addTag(FakeCustomName, new Tag(true, `""`));
+        addTag(FakeCustomName, new jsonSegment(`${(0).toLocaleString('en-US')}`,`red`).get);
+        addTag(FakeCustomName, new jsonSegment(`/`,`white`).get);
+        addTag(FakeCustomName, new jsonSegment(`${parseInt(get("HP")).toLocaleString('en-US')}`,`green`).get);
+        addTag(FakeCustomName, new jsonSegment(`❤ `,`dark_red`).get);
+        addTag(FakeCustomName, new jsonSegment(`${get("Name")} `,`${get("Name Color")}`).get);
+        addTag(FakeCustomName, new jsonSegment(`[`,`dark_gray`).get);
+        addTag(FakeCustomName, new jsonSegment(`Lv${get("Mob Level")}`,`gray`).get);
+        addTag(FakeCustomName, new jsonSegment(`]`,`dark_gray`).get);
+        addTag(nbt, new Tag(true, [`CustomName:'[`,`]'`], FakeCustomName));
     }else{
         addTag(nbt, new Tag(true, [`CustomName:'[`,`]'`], CustomName));
     }
