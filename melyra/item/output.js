@@ -65,7 +65,7 @@ class jsonSegment {
     
     get get() {
         let segment = [];
-        if(this.value == "" && color == ""){
+        if(this.value == "" && this.color == ""){
             return new Tag(`""`);
         }
         if(this.value != undefined){
