@@ -65,13 +65,13 @@ class jsonSegment {
     
     get get() {
         let segment = [];
-        if(this.value == ""){
+        if(this.value == "" && color == ""){
             return new Tag(`""`);
         }
         if(this.value != undefined){
             addTag(segment, new Tag(`"text":"${this.value}"`));
         }
-        if(this.color != undefined){
+        if(this.color != ""){
             addTag(segment, new Tag(`"color":"${this.color}"`));
         }
         if(this.italic != undefined){
