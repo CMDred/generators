@@ -65,6 +65,9 @@ class jsonSegment {
     
     get get() {
         let segment = [];
+        if(this.value == ""){
+            return new Tag(`""`);
+        }
         if(this.value != undefined){
             addTag(segment, new Tag(`"text":"${this.value}"`));
         }
