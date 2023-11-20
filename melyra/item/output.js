@@ -72,13 +72,13 @@ class jsonSegment {
             addTag(segment, new Tag(`"color":"${this.color}"`));
         }
         if(this.italic != undefined){
-            addTag(segment, new Tag(`"italic":"${this.italic}"`));
+            addTag(segment, new Tag(`"italic":${this.italic}`));
         }
         if(this.obfuscated != undefined){
-            addTag(segment, new Tag(`"obfuscated":"${this.obfuscated}"`));
+            addTag(segment, new Tag(`"obfuscated":${this.obfuscated}`));
         }
         if(this.bold != undefined){
-            addTag(segment, new Tag(`"bold":"${this.bold}"`));
+            addTag(segment, new Tag(`"bold":${this.bold}`));
         }
         return new Tag([`{`,`}`],segment);
     }
