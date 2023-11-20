@@ -102,6 +102,7 @@ function output(){
     addTag(nbt,new Tag(true, `CustomNameVisible:1b`));
     addTag(nbt,new Tag(true, `ArmorDropChances:[0.000F,0.000F,0.000F,0.000F]`));
     addTag(nbt,new Tag(true, `HandDropChances:[0.000F,0.000F]`));
+    
 
     let CustomName = [];
     addTag(CustomName, new Tag(true, `""`));
@@ -113,6 +114,7 @@ function output(){
     addTag(CustomName, new jsonSegment(`[`,`dark_gray`).get);
     addTag(CustomName, new jsonSegment(`Lv${get("Mob Level")}`,`gray`).get);
     addTag(CustomName, new jsonSegment(`]`,`dark_gray`).get);
+    
 
     let ArmorItems = [];
     addTag(ArmorItems, new Tag(true, `{}`));

@@ -163,6 +163,7 @@ function output(){
         addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(`[${rarity.name}]` , "white").get]));
     }
     if(get(`Can be upgraded? (has "This item can be upgraded" text) `)){
+        addTag(nbt, new Tag(`Level:0b`));
         addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(`Level +0` , "#EDEDED").get]));
         let UpgradeCost = []
         for (let i = 0; i < 9; i++) {
@@ -314,7 +315,6 @@ function output(){
 
     addTag(nbt,new Tag(`HideFlags:127`));
     addTag(nbt,new Tag(`Unbreakable:1b`));
-    addTag(nbt, new Tag(`Level:0`));
     if(get(`CustomModelData`)){
         addTag(nbt, new Tag(`CustomModelData:${get(`CustomModelData`)}`));
     }
