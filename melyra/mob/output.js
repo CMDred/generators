@@ -130,7 +130,7 @@ function output(){
         addTag(tag, new Tag(true, `HealthBarName:'[${getNBT(CustomName.slice(2))}]'`));
 
 
-        addTag(ArmorItems, new Tag(true, [`{id:"minecraft:scute",Count:1b,tag:{`,`}}`], tag));
+        addTag(ArmorItems, new Tag(true, [`{id:"minecraft:turtle_scute",Count:1b,tag:{`,`}}`], tag));
     }
     addTag(nbt, new Tag(ArmorItems.length, ['ArmorItems:[',']'], ArmorItems));
     let Passengers = [];
