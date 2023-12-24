@@ -344,15 +344,43 @@ function output(){
     checkhidden()
 }
 
+function compareItems(input, options){
+    input = input.toLowerCase()
+    for(option of options){
+        if(input.endsWith(option.toLowerCase())){
+            return true
+        }
+    }
+    return false
+}
+
 function checkhidden(){
     for(let setting in settings){
-        if(settings[setting].hidden == "Upgradeable"){
-            let element = options.children[setting];
-            if(get(`Can be upgraded? (has "This item can be upgraded" text) `)){
-                element.classList.remove('hide')
-            }else{
-                element.classList.add('hide')
-            }
+        const element = options.children[setting];
+        switch (settings[setting].hidden) {
+            case "Upgradeable":
+                if(get(`Can be upgraded? (has "This item can be upgraded" text) `)){
+                    element.classList.remove('hide');
+                }else{
+                    element.classList.add('hide');
+                }
+                break;
+            case "skull":
+                if(compareItems(get("Item ID"),["player_head"])){
+                    element.classList.remove('hide');
+                }else{
+                    element.classList.add('hide');
+                }
+                break;
+            case "leather":
+                if(compareItems(get("Item ID"),["LEATHER_HELMET","LEATHER_CHESTPLATE", "LEATHER_LEGGINGS", "LEATHER_BOOTS", "LEATHER_HORSE_ARMOR"])){
+                    element.classList.remove('hide');
+                }else{
+                    element.classList.add('hide');
+                }
+                break;
+            default:
+                break;
         }
     }
 }

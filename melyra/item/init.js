@@ -11,8 +11,8 @@ let settings = [
     {"type":"html","value":"<br><p>Base Stats (leave at 0 if you don't want it applied to the item)</p>"},
     ...statSettings(),
     {"type":"html","value":"<br><p>Additional Values (leave at default to ignore)</p>"},
-    {"name":"SkullOwner (Enter Value or Username):","type":"text","placeholder":"GamingRedPandas"},
-    {"name":"display.color (leather armor only):","type":"color"},
+    {"name":"SkullOwner (Enter Value or Username):","type":"text","placeholder":"GamingRedPandas", "hidden":"skull"},
+    {"name":"display.color (leather armor only):","type":"color", "hidden":"leather"},
     {"name":"CustomModelData","type":"number"},
     {"name":"RandomCustomModelData","type":"number","hidden":"hasSecondStat"}
 ];
