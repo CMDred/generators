@@ -10,6 +10,7 @@ let settings = [
     ...upgradecost(),
     {"type":"html","value":"<br><p>Base Stats (leave at 0 if you don't want it applied to the item)</p>"},
     ...statSettings(),
+    ...Abilities(),
     {"type":"html","value":"<br><p>Additional Values (leave at default to ignore)</p>"},
     {"name":"SkullOwner (Enter Value or Username):","type":"text","placeholder":"GamingRedPandas", "hidden":"skull"},
     {"name":"display.color (leather armor only):","type":"color", "hidden":"leather"},
@@ -27,7 +28,7 @@ function statSettings() {
 
 function upgradecost() {
     let settings = [];
-    settings.push({"type":"html","value":"<br><p>Upgrade Cost</p>"});
+    settings.push({"type":"html","value":"<br><h2>Upgrade Cost</h2>"});
     for (let i = 0; i < 9; i++) {
         settings.push({"name":`upgradecost: ${i}`, "type":"upgradecost"})
     }
@@ -36,6 +37,13 @@ function upgradecost() {
     }
     return settings;
 } 
+
+function Abilities(){
+    let settings = [];
+    settings.push({"type":"html","value":"<br><h2>Abilities</h2>"});
+    settings.push({"name": "Abilities", "type":"Abilities"});
+    return settings;
+}
 
 function hasStatRange(){
     return document.getElementsByClassName("hidestat2").length != statData.length
@@ -55,6 +63,12 @@ function generateSetting(option){
         setting.innerHTML = option.value;
         return setting;
     }
+    if(option.type == "Abilities"){
+        let setting = document.createElement("div");
+        newAbility(setting);
+        return setting;
+    }
+
     let setting = document.createElement("p");
     if(option.hidden){
         setting.classList.add('hide')
@@ -160,13 +174,54 @@ function newLine(container){
     let Count = document.createElement("input");
     Material.placeholder = "MaterialID";
     Count.type = "Amount";
+    Count.onchange = (() => output());
     let addMaterial = document.createElement("button");
     addMaterial.innerText = '+';
     addMaterial.onclick = ((e) => addcost(e));
-    Count.onchange = ((e) => output());
     line.append(Material,Count,addMaterial)
     container.append(line);
 }
+
+function newAbility(container){
+    console.log(container.children.length+1);
+    let line = document.createElement("div");
+    line.append(generateSetting({"type":"html","value":`<br><h3>Ability:</h3>`})); //  ${container.children.length+1}
+    line.append(generateSetting({"name":`Display Ability Name:`, "type":"text"}));
+    line.append(generateSetting({"name":`Ability Name:`, "type":"text"}));
+    line.append(generateSetting({"name":`Activation:`, "type":"select","options":Activations.map(Activation => Activation.name.toLowerCase())}));
+    line.append(generateSetting({"name":`Description:`, "type":"text"}));
+    line.append(generateSetting({"name":`Mana Cost:`, "type":"number"}));
+    let addButton = document.createElement("button");
+    addButton.innerText = '+';
+    addButton.onclick = ((e) => addAbility(e));
+    line.append(addButton);
+    container.append(line);
+}
+
+function addAbility(e) {
+    let container = e.target.parentElement.parentElement;
+    newAbility(container);
+    for(child of container.children){
+        if(child.children[7]){
+            child.children[7].remove()
+        }
+        let removeButton = document.createElement("button");
+        removeButton.innerText = '-';
+        removeButton.onclick = ((e) => removeAbility(e));
+        child.append(removeButton);
+    }
+}
+
+function removeAbility(e){
+    let container = e.target.parentElement.parentElement;
+    e.target.parentElement.remove();
+    if(container.children.length == 1){
+        if(container.children[0].children[7]){
+            container.children[0].children[7].remove()
+        }
+    }
+}
+
 
 function addcost(e) {
     let container = e.target.parentElement.parentElement;

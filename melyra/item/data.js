@@ -70,6 +70,19 @@ const Types = [
     "Fishing",
 ]
 
+const Activations = [
+    {"name":"Full Set", "display":"Full Set", "id":1},
+    {"name":"Passive" ,"display":"Passive", "id":2},
+    {"name":"Right-click" ,"display":"Right-click", "id":3},
+    {"name":"Right-click Shift" ,"display":"Shift-click", "id":4},
+    {"name":"Right-click Hold" ,"display":"Right-click", "id":5},
+    {"name":"Sneak" ,"display":"Sneak", "id":6},
+    {"name":"Sneak Double" ,"display":"Double Sneak", "id":7},
+    {"name":"Kill" ,"display":"Kill", "id":8},
+    {"name":"Shoot" ,"display":"Shoot", "id":9},
+    {"name":"Throw" ,"display":"Throw", "id":9},
+    {"name":"Hit" ,"display":"Hit", "id":10},
+]
 
 const JSONColor = {
     '1': 'dark_blue',

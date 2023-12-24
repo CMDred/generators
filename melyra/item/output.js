@@ -7,7 +7,29 @@ function get(name){
 function getvalue(settings,name){
     index = settings.findIndex(e => e.name == name);
     if(index == -1){
-        console.log("not found");
+        console.log("setting name not found");
+    }else if(settings[index].type == "Abilities"){
+        let values = [];
+        let container = options.children[index];
+        for(ability of container.children){
+            Ability_Name = ability.children[2].children[1].value;
+            Activation =  ability.children[3].children[1].value;
+            for(a of Activations){
+                if(a.name.toLowerCase() == Activation){
+                    console.log("test");
+                    Activation = a.id;
+                    break;
+                }
+            }
+            if(Ability_Name == "" || Activation == ""){
+                continue;
+            }
+            // Display_Ability_Name = ability.children[1].children[1].value;
+            // Description =  ability.children[4].children[1].value;
+            // Mana_Cost =  ability.children[5].children[1].value;
+            values.push(new Tag(`{Name:"${Ability_Name}", Activation:${Activation}}`))
+        }
+        return values;
     }else{
         option = options.children[index].children[1]
         switch (option.tagName) {
@@ -248,6 +270,10 @@ function output(){
         if(line.length){
             addTag(Lore, new Tag([`'[`,`]'`],line));
         }
+    }
+    AbilityData = get("Abilities")
+    if(AbilityData.length > 0){
+        addTag(nbt, new Tag([`Abilities:[`,`]`], AbilityData));
     }
 
     if(TypeID && rarity){
