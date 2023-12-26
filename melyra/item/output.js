@@ -276,7 +276,7 @@ function output(){
                 }
             }
             
-            AbilityNBT.unshift(new Tag(`{Name:"${ability[0]}", Activation:${Activation.id}}`));
+            AbilityNBT.unshift(new Tag(`{Name:"${ability[0]}", Activation:${Activation.id}b}`));
             if(ability[2] != "" || ability[3] != ""|| ability[4] != ""){
                 addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
                 if(ability[2] != ""){
@@ -324,7 +324,7 @@ function output(){
     }
 
     if(TypeID){
-        addTag(nbt,new Tag(`TypeID:${TypeID}`)); 
+        addTag(nbt,new Tag(`TypeID:${TypeID}b`)); 
         let CustomEnchantments = [];
         for (let i = 0; i < rarities.indexOf(rarity)+1; i++) {
             CustomEnchantments.push(new Tag(`Slot${i}:-2`))
