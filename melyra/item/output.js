@@ -14,20 +14,13 @@ function getvalue(settings,name){
         for(ability of container.children){
             Ability_Name = ability.children[2].children[1].value;
             Activation =  ability.children[3].children[1].value;
-            for(a of Activations){
-                if(a.name.toLowerCase() == Activation){
-                    console.log("test");
-                    Activation = a.id;
-                    break;
-                }
-            }
             if(Ability_Name == "" || Activation == ""){
                 continue;
             }
-            // Display_Ability_Name = ability.children[1].children[1].value;
-            // Description =  ability.children[4].children[1].value;
-            // Mana_Cost =  ability.children[5].children[1].value;
-            values.push(new Tag(`{Name:"${Ability_Name}", Activation:${Activation}}`))
+            Display_Ability_Name = ability.children[1].children[1].value;
+            Description =  ability.children[4].children[1].value;
+            Mana_Cost =  ability.children[5].children[1].value;
+            values.push([Ability_Name, Activation, Display_Ability_Name, Description, Mana_Cost]);
         }
         return values;
     }else{
@@ -209,11 +202,11 @@ function output(){
     }
     let description = [];
     if(descriptionText.length > 1 || descriptionText[0] != ""){
+        addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
         for(segement of descriptionText){
             addTag(description, new Tag([`'`,`'`], [Object.assign(new jsonSegment(segement,"dark_gray"),{italic: true}).get]));
+            addTag(Lore, new Tag([`'`,`'`], [Object.assign(new jsonSegment(segement,"dark_gray"),{italic: true}).get]));
         }
-        addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
-        addTag(Lore, new Tag(getNBT(description)));
     }
 
     let lastgroup = 0;
@@ -273,7 +266,44 @@ function output(){
     }
     AbilityData = get("Abilities")
     if(AbilityData.length > 0){
-        addTag(nbt, new Tag([`Abilities:[`,`]`], AbilityData));
+        AbilityNBT = [];
+        for(ability of AbilityData){
+            let Activation = {};
+            for(a of Activations){
+                if(a.name.toLowerCase() == ability[1]){
+                    Activation = a;
+                    break;
+                }
+            }
+            
+            AbilityNBT.unshift(new Tag(`{Name:"${ability[0]}", Activation:${Activation.id}}`));
+            if(ability[2] != "" || ability[3] != ""|| ability[4] != ""){
+                addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
+                if(ability[2] != ""){
+                    let n = new jsonSegment(ability[2], rarity.color);
+                    let b1 = new jsonSegment(` [`, 'yellow');
+                    b1.bold = true;
+                    let a = new jsonSegment(Activation.display, 'gold');
+                    let b2 = new jsonSegment(`]`, 'yellow');
+                    b2.bold = true;
+                    addTag(Lore, new Tag([`'[`,`]'`], [n.get,b1.get,a.get,b2.get]));
+                    console.log(Lore);
+                }
+                if(ability[3] != ""){
+                    let descriptionText = ability[3].replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`).split('\\\\\\\\n');
+                    console.log(descriptionText);
+                    if(descriptionText.length > 1 || descriptionText[0] != ""){
+                        for(segement of descriptionText){
+                            addTag(Lore, new Tag([`'`,`'`], [Object.assign(new jsonSegment(segement,"dark_gray"),{italic: true}).get]));
+                        }
+                    }
+                }
+                if(ability[4] != ""){
+                    addTag(Lore, new Tag([`'[`,`]'`], [new jsonSegment(` ₪ Mana: `,`aqua`).get, new jsonSegment(ability[4],`white`).get]));
+                }
+            }
+        }
+        addTag(nbt, new Tag([`Abilities:[`,`]`], AbilityNBT));
     }
 
     if(TypeID && rarity){
@@ -366,6 +396,8 @@ function output(){
     }
 
     textarea.innerText= `/give @p ${get("Item ID")}{${getNBT(nbt)}}`;
+    console.log("Lore");
+    console.log(getNBT(Lore));
     preview(Name,Lore);
     checkhidden()
 }

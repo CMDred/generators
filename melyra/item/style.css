@@ -11,6 +11,7 @@ body {
     background-image: url(images/background.jpg);
     background-size: cover;
     position: relative;
+    white-space: pre;
 }
 
 .container{
@@ -140,7 +141,7 @@ select {
 #ToolTip{
     vertical-align: top;
     border-image: linear-gradient(0deg,rgba(80, 0, 255, 0.3137254901960784) 100%, rgba(40, 0, 127, 0.3137254901960784) 0%) 1 / 5px 5px 5px 5px;
-    padding: 1rem;
+    padding: 0.75rem;
     height: auto;
     max-width: 500px;
     min-width: 200px;
