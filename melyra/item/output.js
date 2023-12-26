@@ -294,7 +294,7 @@ function output(){
                     console.log(descriptionText);
                     if(descriptionText.length > 1 || descriptionText[0] != ""){
                         for(segement of descriptionText){
-                            addTag(Lore, new Tag([`'`,`'`], [Object.assign(new jsonSegment(segement,"gray"),{italic: true}).get]));
+                            addTag(Lore, new Tag([`'`,`'`], [new jsonSegment(segement,"gray").get]));
                         }
                     }
                 }
