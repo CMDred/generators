@@ -204,6 +204,8 @@ function output(){
     if(descriptionText.length > 1 || descriptionText[0] != ""){
         addTag(Lore, new Tag([`'[`,`]'`],[new jsonSegment(``,``).get]));//empty line
         for(segement of descriptionText){
+            console.log(segement);
+            
             addTag(description, new Tag([`'`,`'`], [Object.assign(new jsonSegment(segement,"dark_gray"),{italic: true}).get]));
             addTag(Lore, new Tag([`'`,`'`], [Object.assign(new jsonSegment(segement,"dark_gray"),{italic: true}).get]));
         }
@@ -287,11 +289,9 @@ function output(){
                     let b2 = new jsonSegment(`]`, 'yellow');
                     b2.bold = true;
                     addTag(Lore, new Tag([`'[`,`]'`], [n.get,b1.get,a.get,b2.get]));
-                    console.log(Lore);
                 }
                 if(ability[3] != ""){
                     let descriptionText = ability[3].replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`).split('\\\\\\\\n');
-                    console.log(descriptionText);
                     if(descriptionText.length > 1 || descriptionText[0] != ""){
                         for(segement of descriptionText){
                             addTag(Lore, new Tag([`'`,`'`], [new jsonSegment(segement,"gray").get]));
@@ -396,8 +396,6 @@ function output(){
     }
 
     textarea.innerText= `/give @p ${get("Item ID")}{${getNBT(nbt)}}`;
-    console.log("Lore");
-    console.log(getNBT(Lore));
     preview(Name,Lore);
     checkhidden()
 }

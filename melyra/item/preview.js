@@ -221,7 +221,9 @@ function toolTip(Name, Lore) {
     for(line of Lore){
         line = getNBT([line])
         line = line.substr(1,line.length -2) // remove quotes
-        console.log(line);
+        line = line.replaceAll(`\\"`, `"`);
+        line = line.replaceAll(`\\'`, `'`);
+        line = line.replaceAll(`\\\\`, `\\`);
         line = JSON.parse(line)
         ToolTip.append(...LineToSegments(line),document.createElement('br'));
     }
