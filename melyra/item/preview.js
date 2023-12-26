@@ -250,9 +250,9 @@ function SegmentToElement(segment){
     if(segment.text  != undefined){
         let element = document.createElement('span');
         element.textContent = segment.text;
-        if(segment.italic == "true") {element.classList.add('italic')};
-        if(segment.bold == "true") {element.classList.add('bold')};
-        if(segment.obfuscated == "true") {element.classList.add('obfuscated')};
+        if(segment.italic == true) {element.classList.add('italic')};
+        if(segment.bold == true) {element.classList.add('bold')};
+        if(segment.obfuscated == true) {element.classList.add('obfuscated')};
         if(segment.color != undefined && segment.color != "") {
             if(segment.color.startsWith(`#`)){
                 element.style.color = segment.color;
