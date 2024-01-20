@@ -7,6 +7,11 @@ let settings = [
     {"name":"Magic Defense","type":"number"},
     {"name":"Magic Damage","type":"number"},
     {"name":"Speed","type":"number"},
+    {"name":`RandomAttack`, "type":"RandomAttack"},
+    {"name":"WhenDamaged","type":"text","placeholder":"1,5,13"},
+    {"name":"WhenKilled","type":"number"},
+    {"name":"WhenPoofed","type":"number"},
+    {"name":"WhenTargeting","type":"number"},
     {"name":"Death Loot table","type":"text"},
     {"name":"Mob Type","type":"autocomplete","autocomplete":summonableMobs},
     {"name":"Custom Agressive Mob","type":"checkbox"},
@@ -52,14 +57,67 @@ function generateSetting(option){
             input.onchange = (() => output());
             setting.append(input);
             break;
-        default:
-
+        case "RandomAttack":
+            {
+                let container = document.createElement("div");
+                newRandomAttackLine(container);
+                setting.append(container);
+            }
             break;
+        default:
+            console.log("error", option);
+            break;
+    }
+    if(option.placeholder){
+        input.placeholder = option.placeholder;
     }
     return setting;
 }
 
+function newRandomAttackLine(container){
+    let line = document.createElement("div");
+    let ID = document.createElement("input");
+    ID.placeholder = "ID";
+    ID.type = "text";
+    ID.onchange = (() => output());
+    let Timer = document.createElement("input");
+    Timer.placeholder = "Timer";
+    Timer.type = "Amount";
+    Timer.onchange = (() => output());
+    let addRandomAttackButton = document.createElement("button");
+    addRandomAttackButton.innerText = '+';
+    addRandomAttackButton.onclick = ((e) => addRandomAttack(e));
+    line.append(ID,Timer,addRandomAttackButton)
+    container.append(line);
+}
 
+function addRandomAttack(e) {
+    let container = e.target.parentElement.parentElement;
+    const maxRandomAttacks = 3;
+    if(container.children.length == maxRandomAttacks){
+        return;
+    }
+    newRandomAttackLine(container);
+    for(child of container.children){
+        if(child.children[3]){
+            child.children[3].remove()
+        }
+        let removeRandomAttackButton = document.createElement("button");
+        removeRandomAttackButton.innerText = '-';
+        removeRandomAttackButton.onclick = ((e) => removeRandomAttack(e));
+        child.append(removeRandomAttackButton);
+    }
+}
+
+function removeRandomAttack(e){
+    let container = e.target.parentElement.parentElement;
+    e.target.parentElement.remove();
+    if(container.children.length == 1){
+        if(container.children[0].children[3]){
+            container.children[0].children[3].remove()
+        }
+    }
+}
 
 class Autocomplete {
     input;
