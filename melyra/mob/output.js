@@ -31,6 +31,7 @@ function getvalue(settings, name) {
                         for(let Attack of option.children){
                             Attacks.push(`{ID:${Attack.children[0].value},Timer:${Attack.children[1].value}}`);
                         }
+                        Attacks = Attacks.filter(e => e !== "{ID:,Timer:}")
                         return Attacks.join(",");
                 }
                 break
@@ -141,11 +142,22 @@ function output() {
         addTag(tag, new Tag(get("Name"), [`MobName:'{`, `}'`], json));
         addTag(tag, new Tag(true, `CustomModelData:1b`));
         addTag(tag, new Tag(true, `HealthBarName:'[${getNBT(CustomName.slice(2))}]'`));
-        addTag(tag, new Tag(get("RandomAttack"), `RandomAttack:[${get("RandomAttack")}]`));
-        addTag(tag, new Tag(get("WhenDamaged"), `WhenDamaged:[${get("WhenDamaged")}]`));
-        addTag(tag, new Tag(get("WhenKilled"), `WhenKilled:${get("WhenKilled")}`));
-        addTag(tag, new Tag(get("WhenPoofed"), `WhenPoofed:${get("WhenPoofed")}`));
-        addTag(tag, new Tag(get("WhenTargeting"), `WhenTargeting:${get("WhenTargeting")}`));
+        {
+            let RandomAttack = get("RandomAttack");
+            let WhenDamaged = get("WhenDamaged");
+            let WhenKilled = get("WhenKilled");
+            let WhenPoofed = get("WhenPoofed");
+            let WhenTargeting = get("WhenTargeting");
+            if([RandomAttack,WhenDamaged,WhenKilled,WhenPoofed,WhenTargeting].some((e) => e)){
+                let Triggers = [];
+                addTag(Triggers, new Tag(RandomAttack, `RandomAttack:[${RandomAttack}]`));
+                addTag(Triggers, new Tag(WhenDamaged, `WhenDamaged:[${WhenDamaged}]`));
+                addTag(Triggers, new Tag(WhenKilled, `WhenKilled:${WhenKilled}`));
+                addTag(Triggers, new Tag(WhenPoofed, `WhenPoofed:${WhenPoofed}`));
+                addTag(Triggers, new Tag(WhenTargeting, `WhenTargeting:${WhenTargeting}`));
+                addTag(tag, new Tag(true, [`Triggers:{`, `}`], Triggers));
+            }
+        }
 
 
 

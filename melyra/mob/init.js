@@ -1,23 +1,23 @@
 let settings = [
     {"name":"Name","type":"text"},
     {"name":"Name Color","type":"autocomplete","autocomplete":colors},
+    {"name":"Mob Type","type":"autocomplete","autocomplete":summonableMobs},
+    {"name":"Mob Level","type":"number"},
     {"name":"HP","type":"number"},
     {"name":"Damage","type":"number"},
     {"name":"Defense","type":"number"},
     {"name":"Magic Defense","type":"number"},
     {"name":"Magic Damage","type":"number"},
     {"name":"Speed","type":"number"},
-    {"name":`RandomAttack`, "type":"RandomAttack"},
+    {"name":"Knockback Resistance","type":"number"},
+    {"name":"Death Loot table","type":"text"},
+    {"name":"Custom Agressive Mob","type":"checkbox"},
+    {"name":"Tags","type":"text"},
+    {"name":"RandomAttack", "type":"RandomAttack"},
     {"name":"WhenDamaged","type":"text","placeholder":"1,5,13"},
     {"name":"WhenKilled","type":"number"},
     {"name":"WhenPoofed","type":"number"},
-    {"name":"WhenTargeting","type":"number"},
-    {"name":"Death Loot table","type":"text"},
-    {"name":"Mob Type","type":"autocomplete","autocomplete":summonableMobs},
-    {"name":"Custom Agressive Mob","type":"checkbox"},
-    {"name":"Tags","type":"text"},
-    {"name":"Mob Level","type":"number"},
-    {"name":"Knockback Resistance","type":"number"}
+    {"name":"WhenTargeting","type":"number"}
 ];
 
 document.title = "Melyra Mob Generator";
