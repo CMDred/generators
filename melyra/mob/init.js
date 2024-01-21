@@ -1,8 +1,10 @@
 let settings = [
+    {"type":"html","value":"<h1 style='text-align:center'>Melyra Mob Generator</h1>"},
     {"name":"Name","type":"text"},
     {"name":"Name Color","type":"autocomplete","autocomplete":colors},
     {"name":"Mob Type","type":"autocomplete","autocomplete":summonableMobs},
     {"name":"Mob Level","type":"number"},
+    {"type":"html","value":"<h2>Stats:</h2>"},
     {"name":"HP","type":"number"},
     {"name":"Damage","type":"number"},
     {"name":"Defense","type":"number"},
@@ -10,9 +12,11 @@ let settings = [
     {"name":"Magic Damage","type":"number"},
     {"name":"Speed","type":"number"},
     {"name":"Knockback Resistance","type":"number"},
+    {"type":"html","value":"<h2>Other:</h2>"},
     {"name":"Death Loot table","type":"text"},
     {"name":"Custom Agressive Mob","type":"checkbox"},
     {"name":"Tags","type":"text"},
+    {"type":"html","value":"<h2>Abilities:</h2>"},
     {"name":"RandomAttack", "type":"RandomAttack"},
     {"name":"WhenDamaged","type":"text","placeholder":"1,5,13"},
     {"name":"WhenKilled","type":"number"},
@@ -26,6 +30,14 @@ var options = document.getElementById("options");
 
 
 function generateSetting(option){
+    if(option.type == "html"){
+        let setting = document.createElement("div");
+        if(option.hidden){
+            setting.classList.add('hide')
+        }
+        setting.innerHTML = option.value;
+        return setting;
+    }
     let setting = document.createElement("p");
 
     let label = document.createElement("label");
