@@ -64,10 +64,12 @@ function generateSetting(option){
             setting.append(input);
             break;
         case "checkbox":
-            input = document.createElement("input");
-            input.type = "checkbox";
-            input.onchange = (() => output());
-            setting.append(input);
+            let sliderContainer = NewElement("label", "switch");
+            let a = Object.assign(NewElement("input"),{type:"checkbox", onchange: (function () {output()})})
+            NewElement("span","slider")
+            sliderContainer.append(a, NewElement("span","slider"))
+
+            setting.append(sliderContainer);
             break;
         case "RandomAttack":
             {

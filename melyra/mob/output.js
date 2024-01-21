@@ -35,6 +35,8 @@ function getvalue(settings, name) {
                         return Attacks.join(",");
                 }
                 break
+            case "LABEL"://checkbox/slider
+                return option.children[0].checked
         }
     }
     return;
