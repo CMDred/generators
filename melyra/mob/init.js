@@ -148,7 +148,7 @@ class Autocomplete {
     setUpdate() {
         this.input.addEventListener("input", (e) => {
             closeAllLists();
-            let input = e.originalTarget;
+            let input = e.target;
             if (input.value == "") return;
             this.focus = -1;
             input.parentNode.appendChild(this.container);

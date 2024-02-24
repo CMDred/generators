@@ -187,5 +187,5 @@ function output() {
     }
     addTag(nbt, new Tag(Passengers.length, ['Passengers:[', ']'], Passengers));
 
-    textarea.innerText = `/summon ${get("Mob Type")} ~ ~ ~ {${getNBT(nbt)}}`;
+    textarea.innerText = `/summon minecraft:${get("Mob Type")} ~ ~ ~ {${getNBT(nbt)}}`;
 }
