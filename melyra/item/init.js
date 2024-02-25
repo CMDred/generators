@@ -1,6 +1,8 @@
 let settings = [
     {"name":"Item ID","type":"autocomplete","autocomplete":itemIDS,"placeholder":"stone or minecraft:stone"},
     {"name":"Name","type":"text","placeholder":"Unidentified sword"},
+    {"name":"Internal ID","type":"text","placeholder":"master_sword"},
+    {"name":"Version Number","type":"number","placeholder":"1"},
     {"name":"RandomName","type":"text","hidden":"hasSecondStat","placeholder":"Master Sword"},
     {"type":"html","value":"<br><p>Enter the description of the item. Use \\n to begin a new line.</p>"},
     {"name":"Description","type":"text","placeholder":"Sword that Seals the Darkness"},

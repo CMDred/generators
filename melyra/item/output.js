@@ -323,6 +323,13 @@ function output(){
         addTag(Lore, new Tag([`'[`,`]'`],CustomEnchantments));
     }
 
+    if(get("Internal ID")){
+        addTag(nbt,new Tag(`InternalID:"${get("Internal ID")}"`));
+    }
+    if(get("Version Number")){
+        addTag(nbt,new Tag(`Version:${get("Version Number")}s`));
+    }
+
     if(TypeID){
         addTag(nbt,new Tag(`TypeID:${TypeID}b`)); 
         let CustomEnchantments = [];
