@@ -5,3 +5,9 @@ function NewElement(type, ...classes) {
     }
     return element;
 }
+
+function copyOutput() {
+    document.getElementById("output").select();
+    document.getElementById("output").setSelectionRange(0, 99999)
+    document.execCommand("copy");
+  }

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
         <div id="options"></div>
@@ -13,8 +14,11 @@
             <canvas id="Item_Icon"></canvas>
             <div id="ToolTip"></div>
         </div>
-        <textarea class="output" readonly="" id="output" spellcheck="false" placeholder="Your generated command will show here."></textarea>
+        <textarea class="output" readonly="" id="output" spellcheck="false"
+            placeholder="Your generated command will show here."></textarea>
         <p>
+            <button style="width:50%; margin-left:25%; margin-right:25%;"
+                onclick="copyOutput();">copy to clipboard</button>
             <label>loot table</label>
             <label class="switch">
                 <input id="switchLootTable" type="checkbox" onchange="toggleLootTable();output();">

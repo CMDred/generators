@@ -1,5 +1,5 @@
 let settings = [
-    {"name":"Item ID","type":"text","placeholder":"stone or minecraft:stone"},
+    {"name":"Item ID","type":"autocomplete","autocomplete":itemIDS,"placeholder":"stone or minecraft:stone"},
     {"name":"Name","type":"text","placeholder":"Unidentified sword"},
     {"name":"RandomName","type":"text","hidden":"hasSecondStat","placeholder":"Master Sword"},
     {"type":"html","value":"<br><p>Enter the description of the item. Use \\n to begin a new line.</p>"},
@@ -93,7 +93,7 @@ function generateSetting(option){
             input = document.createElement("input");
             input.onchange = (() => output());
             input.type = "text";
-            new Autocomplete(input,option.options);
+            new Autocomplete(input,option.autocomplete);
             setting.append(input);
             break;
         case "select":
@@ -263,33 +263,29 @@ class Autocomplete {
         this.input.addEventListener("input", (e) => {
             closeAllLists();
             let input = e.target;
-            if (input.value == "") return;
+            const v = input.value.toUpperCase()
+            if (v == "") return;
             this.focus = -1;
             input.parentNode.appendChild(this.container);
-            this.array.filter((optie) => optie.startsWith(input.value.toLowerCase())).forEach(element => {
+            this.array.filter((optie) => optie.startsWith(v)).forEach(element => {
                 let box = document.createElement("DIV");
-                box.innerHTML = "<strong>" + input.value + "</strong>";
-                box.innerHTML += element.substr(input.value.length);
+                box.innerHTML = "<strong>" + v + "</strong>";
+                box.innerHTML += element.substr(v.length);
                 box.innerHTML += "<input type='hidden' value='" + element + "'>";
                 box.addEventListener("click", function (e) {
-                    input.value = this.getElementsByTagName("input")[0].value;
-                    output();
+                    input.value = this.getElementsByTagName("input")[0].value.toLowerCase();
                     closeAllLists();
+                    output();
                 });
                 this.container.appendChild(box);
             });
         })
+
         this.input.addEventListener("focusout", (e) => {if (this.container.children.length) return this.container.children[0].click();output();});
 
         this.input.addEventListener("keydown", (e) => {
             if (!this.container.children.length || ![13,38,40].includes(e.keyCode)) return; // if there are options and a navigation key is presed
-            if (e.keyCode == 13) {
-                if(this.focus = -1){
-                    return this.container.children[0].click();
-                }
-                this.container.children[this.focus].click(); // enter is pressed and the current element is clicked
-                return output();
-            }
+            if (e.keyCode == 13) return this.container.children[this.focus].click(); // enter is pressed and the current element is clicked
             if (this.focus != -1) this.container.children[this.focus].classList.remove("autocomplete-active"); // if something is focused remove class from the old focus
             this.focus = e.keyCode == 40 ? Math.min(this.focus + 1, this.container.children.length - 1) : Math.max(this.focus - 1, 0);// the selection index is changed based on whether the up or down arrow was pressed
             this.container.children[this.focus].classList.add("autocomplete-active");// add the class to the new selected item
