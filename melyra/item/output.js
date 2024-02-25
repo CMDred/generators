@@ -45,7 +45,7 @@ function getvalue(settings,name){
                 if(settings[index].type == "upgradecost"){
                     values = [];
                     for(child of option.children){
-                        values.push([child.children[0].value, child.children[1].value])
+                        values.push([child.children[0].value, child.children[2].value])
                     }
                     return values;
                 }
@@ -189,7 +189,7 @@ function output(){
             let row = [];
             for(set of values){
                 if(set[0] != "" && set[1] != ""){
-                    addTag(row, new Tag(`{Count: ${set[1]}, MaterialID: ${set[0]}}`));
+                    addTag(row, new Tag(`{Count: ${set[1]}s, InternalID: "${set[0]}"}`));
                 }
             }
             if(row.length == 0){

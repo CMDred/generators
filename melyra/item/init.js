@@ -169,16 +169,19 @@ function toggleStat(e) {
 function newLine(container){
     let line = document.createElement("div");
     let Material = document.createElement("input");
-    Material.placeholder = "MaterialID";
+    Material.placeholder = "InternalID";
     Material.type = "text";
     Material.onchange = (() => output());
+    let CountSpan = document.createElement("span");
+    CountSpan.innerText = "     Count:";
     let Count = document.createElement("input");
-    Count.type = "Amount";
+    Count.placeholder = "1";
+    Count.type = "number";
     Count.onchange = (() => output());
     let addMaterial = document.createElement("button");
     addMaterial.innerText = '+';
     addMaterial.onclick = ((e) => addcost(e));
-    line.append(Material,Count,addMaterial)
+    line.append(Material,CountSpan,Count,addMaterial)
     container.append(line);
 }
 
