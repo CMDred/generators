@@ -107,7 +107,6 @@ function generateSetting(option){
         case "checkbox":
             let sliderContainer = NewElement("label", "switch");
             let a = Object.assign(NewElement("input"),{type:"checkbox", onchange: (function () {output()})})
-            NewElement("span","slider")
             sliderContainer.append(a, NewElement("span","slider"))
 
             setting.append(sliderContainer);
@@ -172,7 +171,6 @@ function newLine(container){
     Material.type = "text";
     Material.onchange = (() => output());
     let Count = document.createElement("input");
-    Material.placeholder = "MaterialID";
     Count.type = "Amount";
     Count.onchange = (() => output());
     let addMaterial = document.createElement("button");
@@ -264,7 +262,7 @@ class Autocomplete {
     setUpdate() {
         this.input.addEventListener("input", (e) => {
             closeAllLists();
-            let input = e.originalTarget;
+            let input = e.target;
             if (input.value == "") return;
             this.focus = -1;
             input.parentNode.appendChild(this.container);
@@ -318,4 +316,13 @@ newElement = (name,options) => Object.assign(document.createElement(name),option
 
 
 settings.forEach(option => options.appendChild(generateSetting(option)));
+
+toggleSlash = () => localStorage.setItem("slash", hasSlash.checked);
+
+toggleLootTable = () => localStorage.setItem("LootTable", switchLootTable.checked);
+
+hasSlash.checked = localStorage.getItem("slash") == "true";
+
+switchLootTable.checked = localStorage.getItem("LootTable") == "true";
+
 output();

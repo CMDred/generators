@@ -14,6 +14,18 @@
             <div id="ToolTip"></div>
         </div>
         <textarea class="output" readonly="" id="output" spellcheck="false" placeholder="Your generated command will show here."></textarea>
+        <p>
+            <label>loot table</label>
+            <label class="switch">
+                <input id="switchLootTable" type="checkbox" onchange="toggleLootTable();output();">
+                <span class="slider"></span>
+            </label>
+            <label>Start with /</label>
+            <label class="switch">
+                <input id="hasSlash" type="checkbox" onchange="toggleSlash();output();">
+                <span class="slider"></span>
+            </label>
+        </p>
         <script src="util.js"></script>
         <script src="data.js"></script>
         <script src="preview.js"></script>

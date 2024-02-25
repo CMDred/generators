@@ -39,7 +39,7 @@ p p{
 }
 
 .output {
-    text-align: center;
+    text-align: left;
     margin-top: 20px;
     height: 100px;
     width: 100%;
@@ -93,6 +93,7 @@ select {
 
 .autocomplete {
     position: relative;
+    /* width: 90%; */
     display: inline-block;
 }
 
@@ -215,4 +216,8 @@ select {
 .hidden{
     color: rgba(0, 0, 0, 0);
     display: inline-block;
+}
+
+.hiding{
+    display: none;
 }

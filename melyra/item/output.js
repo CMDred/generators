@@ -395,9 +395,39 @@ function output(){
         addTag(nbt, new Tag([`Description:[`,`]`],description));
     }
 
-    textarea.innerText= `/give @p ${get("Item ID")}{${getNBT(nbt)}}`;
+    const item = get("Item ID");
+    const ItemNBT = getNBT(nbt);
+    const slash = hasSlash.checked ? "/" : "";
+
+    let command = slash + "give @p " + item + ItemNBT;
+    let LootTable = `\
+{\n\
+  "pools": [\n\
+    {\n\
+      "rolls": 1,\n\
+      "entries": [\n\
+        {\n\
+          "type": "item",\n\
+          "name": "${item}",\n\
+          "functions": [\n\
+            {\n\
+              "function": "minecraft:set_nbt",\n\
+              "tag": "${ItemNBT.replaceAll('"', '\\"')}"\n\
+            }\n\
+          ]\n\
+        }\n\
+      ]\n\
+    }\n\
+  ]\n\
+}`;
+
+    textarea.innerHTML = switchLootTable.checked ? LootTable : command
     preview(Name,Lore);
-    checkhidden()
+    checkhidden();
+    let temp = document.documentElement.scrollTop;
+    document.getElementById("output").style.height = "0px";
+    document.getElementById("output").style.height = document.getElementById("output").scrollHeight + "px";
+    document.documentElement.scrollTop = temp;
 }
 
 function compareItems(input, options){
