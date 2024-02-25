@@ -399,7 +399,7 @@ function output(){
     const ItemNBT = getNBT(nbt);
     const slash = hasSlash.checked ? "/" : "";
 
-    let command = slash + "give @p " + item + ItemNBT;
+    let command = slash + "give @p " + item + "{" + ItemNBT + "}";
     let LootTable = `\
 {\n\
   "pools": [\n\

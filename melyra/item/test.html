@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>test</title>
+</head>
+<body>
+    <span>Name</span>
+    <a href="javascript:showHide('inputName','inputNameS','inputNameH')">
+        <span id="inputNameS">s</span>
+        <span id="inputNameH" class="hiding">h</span>
+    </a>
+    <div id="inputName" class="hiding"></div><br>
+    <span>Lore</span>
+    <a id="inputLoreSH" href="javascript:showHide('inputLore','inputLoreS','inputLoreH')">
+        <span id="inputLoreS">s</span>
+        <span id="inputLoreH" class="hiding">h</span>
+    </a>
+    <div id="inputLore" class="hiding"></div>
+    <script src="data.js"></script>
+    <script src="inputParts.js"></script>
+    <script>
+        const tJ = new TextJson();
+        tJ.newEditor(false,inputName);
+        tJ.newEditor(true,inputLore);
+    </script>
+</body>
+</html>
