@@ -158,8 +158,10 @@ function getDecimal(hex){
 
 function output(){
     const rarity = rarities[get("Rarity")];
-    const TypeID = get('Type');
-    const Type = Types[TypeID];
+    const TypeID = Object.keys(Types)[get("Type")];
+    console.log("TypeID", TypeID);
+    const Type = Object.values(Types)[get("Type")]
+    console.log("Type", Type);
 
 
     let nbt = [];

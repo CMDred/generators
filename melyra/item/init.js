@@ -7,7 +7,7 @@ let settings = [
     {"type":"html","value":"<br><p>Enter the description of the item. Use \\n to begin a new line.</p>"},
     {"name":"Description","type":"text","placeholder":"Sword that Seals the Darkness"},
     {"name":"Rarity","type":"select","options":rarities.map(rarity => rarity.name.toLowerCase())},
-    {"name":"Type","type":"select","options":Types.map(type => type.toLowerCase()),"placeholder":"Melee"},
+    {"name":"Type","type":"select","options":Object.values(Types).map(type => type.toLowerCase()),"placeholder":"Melee"},
     {"name":`Can be upgraded? (has "This item can be upgraded" text) `,"type":"checkbox"},
     ...upgradecost(),
     {"type":"html","value":"<br><p>Base Stats (leave at 0 if you don't want it applied to the item)</p>"},
@@ -251,7 +251,6 @@ function removecost(e){
 }
 
 
-
 class Autocomplete {
     input;
     focus;
@@ -264,6 +263,12 @@ class Autocomplete {
         this.setUpdate();
     }
 
+    clickAuto(element) {
+        this.input.value = element.toLowerCase();
+        closeAllLists();
+        output();
+    }
+
     setUpdate() {
         this.input.addEventListener("input", (e) => {
             closeAllLists();
@@ -272,16 +277,13 @@ class Autocomplete {
             if (v == "") return;
             this.focus = -1;
             input.parentNode.appendChild(this.container);
+            this.container.appendChild(document.createElement("DIV"));
             this.array.filter((optie) => optie.startsWith(v)).forEach(element => {
                 let box = document.createElement("DIV");
                 box.innerHTML = "<strong>" + v + "</strong>";
                 box.innerHTML += element.substr(v.length);
                 box.innerHTML += "<input type='hidden' value='" + element + "'>";
-                box.addEventListener("click", function (e) {
-                    input.value = this.getElementsByTagName("input")[0].value.toLowerCase();
-                    closeAllLists();
-                    output();
-                });
+                box.addEventListener("click", () => this.clickAuto(element));
                 this.container.appendChild(box);
             });
         })
