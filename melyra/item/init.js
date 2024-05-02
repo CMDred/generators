@@ -17,6 +17,7 @@ let settings = [
     {"name":"SkullOwner (Enter Value or Username):","type":"text","placeholder":"GamingRedPandas", "hidden":"skull"},
     {"name":"display.color (leather armor only):","type":"color", "hidden":"leather"},
     {"name":"CustomModelData","type":"number"},
+    {"name":"Other NBT","type":"text"},
     {"name":"RandomCustomModelData","type":"number","hidden":"hasSecondStat"}
 ];
 

@@ -397,6 +397,9 @@ function output(){
         addTag(nbt, new Tag([`Description:[`,`]`],description));
     }
 
+    addTag(nbt, new Tag(get("Other NBT")));
+    addTag(components, new Tag([`minecraft:custom_data={`,`}`],nbt));
+
     const item = get("Item ID");
     const ItemNBT = getNBT(nbt);
     const slash = hasSlash.checked ? "/" : "";
