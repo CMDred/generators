@@ -117,11 +117,6 @@ function getNBT(nbt) {
 function addTag(list, tag){
     list.push(tag)
 }
-
-function addjsonSegment(list, tag){
-    list.push(tag)
-}
-
 Array.prototype.get = function(key, value){
     let item = this.find(item => item[key].localeCompare(value, undefined, { sensitivity: 'accent' }) === 0);
     return item ? item : false;
@@ -165,16 +160,16 @@ function output(){
 
 
     let nbt = [];
-    let display = [];
+    let components = []
     var Lore = [];
 
     if(get("display.color (leather armor only):") != "#a06540"){
-        addTag(display,new Tag(`color:${getDecimal(get("display.color (leather armor only):"))}`));
+        addTag(components, new Tag(`minecraft:dyed_color=${getDecimal(get("display.color (leather armor only):"))}`));
     }
 
     let Name = new jsonSegment(get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`), rarity.color);
     if(get("Name")){
-        addTag(display, new Tag([`Name:'[`,`]'`],[Name.get]));
+        addTag(components, new Tag([`minecraft:item_name='`,`'`],[Name.get]));
     }
     let descriptionText = get("Description").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`).split('\\\\\\\\n');
     if(TypeID){
@@ -370,11 +365,11 @@ function output(){
                 attributeUuid = attributeUuids.MAINHAND;
                 break;
         }
-        addTag(AttributeModifiers, new Tag(`{AttributeName:"minecraft:generic.luck",Amount:-0.000999999999,Operation:0,UUID:${attributeUuid.id},Slot:"${attributeUuid.slot}"}`));
+        addTag(AttributeModifiers, new Tag(`{type:"minecraft:generic.luck",name:"",amount:-0.000999999999,operation:"add_value",uuid:${attributeUuid.id},slot:"${attributeUuid.slot}"}`));
         if(["bow", "minecraft:bow"].includes(get("Item ID").toLocaleLowerCase())){
-            addTag(AttributeModifiers, new Tag(`{AttributeName:"generic.attack_speed",Amount:-999,Operation:0,UUID:${attributeUuid.id},Slot:"${attributeUuid.slot}"}`));
+            addTag(AttributeModifiers, new Tag(`{type:"generic.attack_speed",name:"",amount:-999,operation:"add_value",uuid:${attributeUuid.id},slot:"${attributeUuid.slot}"}`));
         }
-        addTag(nbt, new Tag([`AttributeModifiers:[`,`]`],AttributeModifiers));
+        addTag(components, new Tag([`attribute_modifiers={modifiers:[`,`],show_in_tooltip:false}`],AttributeModifiers));
     }
     if(rarity){
         addTag(nbt,new Tag(`Rarity:'${rarity.name}'`));
@@ -383,8 +378,9 @@ function output(){
 
     addTag(nbt,new Tag(`HideFlags:127`));
     addTag(nbt,new Tag(`Unbreakable:1b`));
+    addTag(components, new Tag(`minecraft:unbreakable={show_in_tooltip:false}`));
     if(get(`CustomModelData`)){
-        addTag(nbt, new Tag(`CustomModelData:${get(`CustomModelData`)}`));
+        addTag(components, new Tag(`minecraft:custom_model_data=${get(`CustomModelData`)}`));
     }
     if(get(`RandomCustomModelData`)){
         addTag(nbt, new Tag(`RandomCustomModelData:${get(`RandomCustomModelData`)}`));
@@ -395,10 +391,7 @@ function output(){
         addTag(nbt, new Tag([`RandomName:'[`,`]'`],[RandomName.get]));
     }
     if(Lore.length){
-        addTag(display, new Tag([`Lore:[`,`]`], Lore));
-    }
-    if(display.length){
-        addTag(nbt, new Tag(['display:{','}'],display));
+        addTag(components, new Tag([`minecraft:lore=[`,`]`],Lore));
     }
     if(get("Description")){
         addTag(nbt, new Tag([`Description:[`,`]`],description));
@@ -408,7 +401,7 @@ function output(){
     const ItemNBT = getNBT(nbt);
     const slash = hasSlash.checked ? "/" : "";
 
-    let command = slash + "give @p " + item + "{" + ItemNBT + "}";
+    let command = slash + "give @p " + item + `[${getNBT(components)}]`;
     let LootTable = `\
 {\n\
   "pools": [\n\
