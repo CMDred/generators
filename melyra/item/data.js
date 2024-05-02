@@ -57,18 +57,22 @@ const attributeUuids = {
     FEET: { id: "[I;12,42069,0,15]", slot: "feet" }
 };
 
+//Unset: None, 1: Helmet, 2: Chestplate, 3: Leggings, 4: Boots, (5: Shield), 10: Melee, (11: Staff), (12: Trident), 20: Ranged, 30: Mining, 40: Foraging, 50: Materials
+
 const Types = {
-    0  : "",
-    1  : "Helmet",
-    2  : "Chestplate",
-    3  : "Leggings",
-    4  : "Boots",
+    0   : "",
+    1   : "Helmet",
+    2   : "Chestplate",
+    3   : "Leggings",
+    4   : "Boots",
+    5   : "Shield",
     10  : "Melee",
+    11  : "Staff",
+    12  : "Trident",
     20  : "Ranged",
     30  : "Mining",
     40  : "Foraging",
     50  : "Materials",
-    //100  : "Fishing",
 };
 
 const Activations = [
