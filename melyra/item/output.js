@@ -170,6 +170,7 @@ function output(){
     }
 
     let Name = new jsonSegment(get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`), rarity.color);
+    Name.italic = undefined
     if(get("Name")){
         addTag(components, new Tag([`minecraft:item_name='`,`'`],[Name.get]));
         lootTable.add(`\
