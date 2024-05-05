@@ -396,14 +396,13 @@ function output(){
 
 
         if(["bow", "minecraft:bow"].includes(get("Item ID").toLocaleLowerCase())){
-            addTag(AttributeModifiers, new Tag(`{type:"generic.attack_speed",name:"",amount:-999,operation:"add_value",uuid:${attributeUuid.id},slot:"${attributeUuid.slot}"}`));
+            addTag(AttributeModifiers, new Tag(`{type:"generic.attack_speed",name:"",amount:-999,operation:"add_value",slot:"${attributeUuid.slot}"}`));
             lootTableAttributeModifiers += `,\
                 {
                   "attribute": "minecraft:generic.attack_speed",
                   "name": "",
                   "amount": -999,
                   "operation": "add_value",
-                  "id": "${attributeUuid.LootTableId}",
                   "slot": "${attributeUuid.slot}"
                 }`
         }
