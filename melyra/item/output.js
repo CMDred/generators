@@ -396,7 +396,7 @@ function output(){
 
         if(["bow", "minecraft:bow"].includes(get("Item ID").toLocaleLowerCase())){
             addTag(AttributeModifiers, new Tag(`{type:"generic.attack_speed",name:"",amount:-999,operation:"add_value",uuid:${attributeUuid.id},slot:"${attributeUuid.slot}"}`));
-            lootTableAttributeModifiers += `
+            lootTableAttributeModifiers += `,\
                 {
                   "attribute": "minecraft:generic.attack_speed",
                   "name": "",
@@ -457,8 +457,9 @@ ${getNBT(Lore).replace(/'(.*?[^\\])'(,?)/gi, "                $1$2\n")}\
     if(get("Description")){
         addTag(nbt, new Tag([`Description:[`,`]`],description));
     }
-
-    addTag(nbt, new Tag(get("Other NBT")));
+    if(get("Other NBT")){
+        addTag(nbt, new Tag(get("Other NBT")));
+    }
     lootTable.add(`\n\
             {
                 "function": "minecraft:set_custom_data",
