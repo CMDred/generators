@@ -173,13 +173,13 @@ function output(){
     if(get("Name")){
         addTag(components, new Tag([`minecraft:item_name='`,`'`],[Name.get]));
         lootTable.add(`\
-        {
-          "function": "minecraft:set_name",
-          "target": "item_name",
-          "name": {
-            ${getNBT(Name.get.content).replaceAll('","', '",\n            "')}
-          }
-        }\n`);
+            {
+              "function": "minecraft:set_name",
+              "target": "item_name",
+              "name": {
+                ${getNBT(Name.get.content).replaceAll('","', '",\n                "')}
+              }
+            }`);
     }
     let descriptionText = get("Description").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`).split('\\\\\\\\n');
     if(TypeID){
@@ -376,7 +376,7 @@ function output(){
                 break;
         }
 
-        lootTableAttributeModifiers =`\
+        lootTableAttributeModifiers =`\n\
             {
               "function": "minecraft:set_attributes",
               "modifiers": [`
@@ -450,14 +450,11 @@ ${getNBT(Lore).replace(/'(.*?[^\\])'(,?)/gi, "                $1$2\n")}\
     }
 
     addTag(nbt, new Tag(get("Other NBT")));
-    if(get("Other NBT")){
-        lootTable.add(`\n\
+    lootTable.add(`\n\
             {
                 "function": "minecraft:set_custom_data",
-                "tag": "${get("Other NBT").replaceAll(`\\`, `\\\\`).replaceAll(`"`, `\\"`)}"
-              }
+                "tag": "{${getNBT(nbt).replaceAll(`\\`, `\\\\`).replaceAll(`"`, `\\"`)}}"
             }`);
-    }
     lootTable.add(`\n\
             {
               "function": "minecraft:toggle_tooltips",
