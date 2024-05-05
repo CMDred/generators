@@ -45,6 +45,7 @@ p p{
     width: 100%;
     border-radius: 6px;
     border-color: #37373770;
+    font-family: 'JetBrains Mono';
 }
 
 input {

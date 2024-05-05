@@ -152,6 +152,7 @@ function getDecimal(hex){
 }
 
 function output(){
+    const item = get("Item ID");
     const rarity = rarities[get("Rarity")];
     const TypeID = Object.keys(Types)[get("Type")];
     console.log("TypeID", TypeID);
@@ -162,6 +163,7 @@ function output(){
     let nbt = [];
     let components = []
     var Lore = [];
+    lootTable = new LootTable(item)
 
     if(get("display.color (leather armor only):") != "#a06540"){
         addTag(components, new Tag(`minecraft:dyed_color=${getDecimal(get("display.color (leather armor only):"))}`));
@@ -170,6 +172,14 @@ function output(){
     let Name = new jsonSegment(get("Name").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`), rarity.color);
     if(get("Name")){
         addTag(components, new Tag([`minecraft:item_name='`,`'`],[Name.get]));
+        lootTable.add(`\
+        {
+          "function": "minecraft:set_name",
+          "target": "item_name",
+          "name": {
+            ${getNBT(Name.get.content).replaceAll('","', '",\n            "')}
+          }
+        }\n`);
     }
     let descriptionText = get("Description").replaceAll(`\\`, `\\\\\\\\`).replaceAll(`'`, `\\'`).replaceAll(`"`, `\\\\"`).split('\\\\\\\\n');
     if(TypeID){
@@ -365,22 +375,56 @@ function output(){
                 attributeUuid = attributeUuids.MAINHAND;
                 break;
         }
+
+        lootTableAttributeModifiers =`\
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [`
+
         addTag(AttributeModifiers, new Tag(`{type:"minecraft:generic.luck",name:"",amount:-0.000999999999,operation:"add_value",uuid:${attributeUuid.id},slot:"${attributeUuid.slot}"}`));
+        lootTableAttributeModifiers += `
+                {
+                  "attribute": "minecraft:generic.luck",
+                  "name": "",
+                  "amount": -0.000999999999,
+                  "operation": "add_value",
+                  "id": "${attributeUuid.LootTableId}",
+                  "slot": "${attributeUuid.slot}"
+                }`
+
+
+
         if(["bow", "minecraft:bow"].includes(get("Item ID").toLocaleLowerCase())){
             addTag(AttributeModifiers, new Tag(`{type:"generic.attack_speed",name:"",amount:-999,operation:"add_value",uuid:${attributeUuid.id},slot:"${attributeUuid.slot}"}`));
+            lootTableAttributeModifiers += `
+                {
+                  "attribute": "minecraft:generic.attack_speed",
+                  "name": "",
+                  "amount": -999,
+                  "operation": "add_value",
+                  "id": "${attributeUuid.LootTableId}",
+                  "slot": "${attributeUuid.slot}"
+                }`
         }
         addTag(components, new Tag([`attribute_modifiers={modifiers:[`,`],show_in_tooltip:false}`],AttributeModifiers));
+        lootTableAttributeModifiers +=`\n\
+              ]
+            }`
+        lootTable.add(lootTableAttributeModifiers);
     }
     if(rarity){
         addTag(nbt,new Tag(`Rarity:'${rarity.name}'`));
         addTag(nbt, new Tag([`RarityColor:'`,`'`],[new jsonSegment(``,rarity.color).get]));
     }
 
-    addTag(nbt,new Tag(`HideFlags:127`));
-    addTag(nbt,new Tag(`Unbreakable:1b`));
     addTag(components, new Tag(`minecraft:unbreakable={show_in_tooltip:false}`));
     if(get(`CustomModelData`)){
         addTag(components, new Tag(`minecraft:custom_model_data=${get(`CustomModelData`)}`));
+        lootTable.add(`\
+            {
+              "function": "minecraft:set_custom_model_data",
+              "value": ${get(`CustomModelData`)}
+            }\n`);
     }
     if(get(`RandomCustomModelData`)){
         addTag(nbt, new Tag(`RandomCustomModelData:${get(`RandomCustomModelData`)}`));
@@ -392,41 +436,44 @@ function output(){
     }
     if(Lore.length){
         addTag(components, new Tag([`minecraft:lore=[`,`]`],Lore));
+        lootTable.add(`\n\
+            {
+              "function": "minecraft:set_lore",
+              "mode": "replace_all",
+              "lore": [
+${getNBT(Lore).replace(/'(.*?[^\\])'(,?)/gi, "                $1$2\n")}\
+              ]
+            }`);
     }
     if(get("Description")){
         addTag(nbt, new Tag([`Description:[`,`]`],description));
     }
 
     addTag(nbt, new Tag(get("Other NBT")));
+    if(get("Other NBT")){
+        lootTable.add(`\n\
+            {
+                "function": "minecraft:set_custom_data",
+                "tag": "${get("Other NBT").replaceAll(`\\`, `\\\\`).replaceAll(`"`, `\\"`)}"
+              }
+            }`);
+    }
+    lootTable.add(`\n\
+            {
+              "function": "minecraft:toggle_tooltips",
+              "toggles": {
+                "minecraft:attribute_modifiers": false
+              }
+            }\n`);
+
     addTag(components, new Tag([`minecraft:custom_data={`,`}`],nbt));
 
-    const item = get("Item ID");
     const ItemNBT = getNBT(nbt);
     const slash = hasSlash.checked ? "/" : "";
 
     let command = slash + "give @p " + item + `[${getNBT(components)}]`;
-    let LootTable = `\
-{\n\
-  "pools": [\n\
-    {\n\
-      "rolls": 1,\n\
-      "entries": [\n\
-        {\n\
-          "type": "item",\n\
-          "name": "${item}",\n\
-          "functions": [\n\
-            {\n\
-              "function": "minecraft:set_nbt",\n\
-              "tag": "${ItemNBT.replaceAll('"', '\\"')}"\n\
-            }\n\
-          ]\n\
-        }\n\
-      ]\n\
-    }\n\
-  ]\n\
-}`;
 
-    textarea.innerHTML = switchLootTable.checked ? LootTable : command
+    textarea.innerHTML = switchLootTable.checked ? lootTable.get : command
     preview(Name,Lore);
     checkhidden();
     let temp = document.documentElement.scrollTop;

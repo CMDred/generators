@@ -49,12 +49,12 @@ const statData = [
 ];
 
 const attributeUuids = {
-    MAINHAND: { id: "[I;12,42069,0,10]", slot: "mainhand" },
-    OFFHAND: { id: "[I;12,42069,0,11]", slot: "offhand" },
-    HEAD: { id: "[I;12,42069,0,12]", slot: "head" },
-    CHEST: { id: "[I;12,42069,0,13]", slot: "chest" },
-    LEGS: { id: "[I;12,42069,0,14]", slot: "legs" },
-    FEET: { id: "[I;12,42069,0,15]", slot: "feet" }
+    MAINHAND: { id: "[I;12,42069,0,10]", slot: "mainhand", LootTableId:"0000000c-0000-a455-0000-00000000000a"},
+    OFFHAND:  { id: "[I;12,42069,0,11]", slot: "offhand", LootTableId:"0000000c-0000-a455-0000-00000000000b"},
+    HEAD:     { id: "[I;12,42069,0,12]", slot: "head", LootTableId:"0000000c-0000-a455-0000-00000000000c" },
+    CHEST:    { id: "[I;12,42069,0,13]", slot: "chest", LootTableId:"0000000c-0000-a455-0000-00000000000d" },
+    LEGS:     { id: "[I;12,42069,0,14]", slot: "legs", LootTableId:"0000000c-0000-a455-0000-00000000000e" },
+    FEET:     { id: "[I;12,42069,0,15]", slot: "feet", LootTableId:"0000000c-0000-a455-0000-00000000000f" }
 };
 
 //Unset: None, 1: Helmet, 2: Chestplate, 3: Leggings, 4: Boots, (5: Shield), 10: Melee, (11: Staff), (12: Trident), 20: Ranged, 30: Mining, 40: Foraging, 50: Materials
