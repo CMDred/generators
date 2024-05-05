@@ -418,6 +418,15 @@ function output(){
     }
 
     addTag(components, new Tag(`minecraft:unbreakable={show_in_tooltip:false}`));
+    lootTable.add(`\n\
+            {
+              "function": "minecraft:set_components",
+            "components": {
+                "minecraft:unbreakable": {
+                  "show_in_tooltip": false
+                }
+              }
+            }`);
     if(get(`CustomModelData`)){
         addTag(components, new Tag(`minecraft:custom_model_data=${get(`CustomModelData`)}`));
         lootTable.add(`\
