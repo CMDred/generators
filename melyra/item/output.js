@@ -381,12 +381,12 @@ function output(){
               "function": "minecraft:set_attributes",
               "modifiers": [`
 
-        addTag(AttributeModifiers, new Tag(`{type:"minecraft:generic.luck",name:"",amount:-0.000999999999,operation:"add_value",uuid:${attributeUuid.id},slot:"${attributeUuid.slot}"}`));
+        addTag(AttributeModifiers, new Tag(`{type:"minecraft:generic.luck",name:"",amount:1.1e-12,operation:"add_value",uuid:${attributeUuid.id},slot:"${attributeUuid.slot}"}`));
         lootTableAttributeModifiers += `
                 {
                   "attribute": "minecraft:generic.luck",
                   "name": "",
-                  "amount": -0.000999999999,
+                  "amount": 1.1e-12,
                   "operation": "add_value",
                   "id": "${attributeUuid.LootTableId}",
                   "slot": "${attributeUuid.slot}"
