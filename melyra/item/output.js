@@ -360,16 +360,16 @@ function output(){
         const AttributeModifiers = [];
         let attributeUuid;
         switch (TypeID) {
-            case 1:
+            case "1":
                 attributeUuid = attributeUuids.HEAD;
                 break;
-            case 2:
+            case "2":
                 attributeUuid = attributeUuids.CHEST;
                 break;
-            case 3:
+            case "3":
                 attributeUuid = attributeUuids.LEGS;
                 break;
-            case 4:
+            case "4":
                 attributeUuid = attributeUuids.FEET;
                 break;
             default:
